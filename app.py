@@ -31,7 +31,7 @@ def render_html(html_str):
     cleaned_lines = [line.strip() for line in html_str.strip().split("\n") if line.strip()]
     st.markdown("\n".join(cleaned_lines), unsafe_allow_html=True)
 
-# Force Streamlit Light Theme in browser DOM and localStorage
+# Force Streamlit Light Theme in browser DOM, localStorage, and setup transition loading indicators
 components.html("""
 <script>
     try {
@@ -46,6 +46,56 @@ components.html("""
             doc.documentElement.style.colorScheme = theme;
             doc.body.style.colorScheme = theme;
             doc.querySelectorAll('[data-theme]').forEach(el => el.setAttribute('data-theme', theme));
+            
+            // Inject Top Progress Bar for instant page navigation feedback
+            if (!doc.getElementById('equity-progress-bar')) {
+                const bar = doc.createElement('div');
+                bar.id = 'equity-progress-bar';
+                bar.style.position = 'fixed';
+                bar.style.top = '0';
+                bar.style.left = '0';
+                bar.style.width = '0%';
+                bar.style.height = '3px';
+                bar.style.background = 'linear-gradient(90deg, #2563eb, #3b82f6, #60a5fa)';
+                bar.style.zIndex = '999999';
+                bar.style.transition = 'width 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease';
+                bar.style.boxShadow = '0 0 10px rgba(37, 99, 235, 0.6)';
+                bar.style.pointerEvents = 'none';
+                doc.body.appendChild(bar);
+            }
+            
+            // Attach click listeners to segmented control buttons and action buttons
+            const attachNavListeners = () => {
+                const buttons = doc.querySelectorAll('div[data-testid="stSegmentedControl"] button, div.stButton > button');
+                buttons.forEach(btn => {
+                    if (!btn.dataset.hasSkeletonListener) {
+                        btn.dataset.hasSkeletonListener = 'true';
+                        btn.addEventListener('click', () => {
+                            const bar = doc.getElementById('equity-progress-bar');
+                            if (bar) {
+                                bar.style.opacity = '1';
+                                bar.style.width = '35%';
+                                setTimeout(() => { if (bar) bar.style.width = '75%'; }, 120);
+                            }
+                        });
+                    }
+                });
+            };
+            
+            attachNavListeners();
+            setInterval(attachNavListeners, 1000);
+            
+            // Finish and hide progress bar after rerun
+            const bar = doc.getElementById('equity-progress-bar');
+            if (bar) {
+                bar.style.width = '100%';
+                setTimeout(() => {
+                    bar.style.opacity = '0';
+                    setTimeout(() => {
+                        bar.style.width = '0%';
+                    }, 250);
+                }, 300);
+            }
         }
     } catch(e) {}
 </script>
@@ -859,8 +909,164 @@ div.stButton > button:active {
 .academic-callout strong {
     color: #0f172a;
 }
+/* ========================================= */
+/* SKELETON LOADERS & WAITING STATES         */
+/* ========================================= */
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.skeleton-pulse {
+    background: linear-gradient(90deg, #f1f5f9 20%, #e2e8f0 40%, #cbd5e1 50%, #e2e8f0 60%, #f1f5f9 80%) !important;
+    background-size: 250% 100% !important;
+    animation: skeleton-shimmer 1.6s ease-in-out infinite !important;
+    border-radius: 6px !important;
+    display: inline-block !important;
+}
+
+.skeleton-box {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    margin-bottom: 1.25rem !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+}
+
+.skeleton-line {
+    height: 14px !important;
+    margin-bottom: 10px !important;
+    border-radius: 4px !important;
+    display: block !important;
+}
+
+.skeleton-title {
+    height: 26px !important;
+    margin-bottom: 12px !important;
+    border-radius: 6px !important;
+    display: block !important;
+}
+
+.skeleton-price {
+    height: 46px !important;
+    border-radius: 8px !important;
+    display: block !important;
+}
+
+.skeleton-badge {
+    height: 30px !important;
+    border-radius: 20px !important;
+    display: inline-block !important;
+}
+
+.skeleton-chart-box {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    min-height: 420px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    margin-top: 1.25rem !important;
+    position: relative !important;
+}
+
+.skeleton-bars-row {
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 12px !important;
+    height: 280px !important;
+    width: 100% !important;
+    padding: 20px 0 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.skeleton-bar-item {
+    flex: 1 !important;
+    border-radius: 4px 4px 0 0 !important;
+}
 </style>
 """)
+
+# Helper function to generate prediction loading skeleton HTML
+def get_prediction_skeleton_html(company_name="Selected Equity", ticker="NSE"):
+    return f"""
+    <div style="margin-bottom: 1.5rem;">
+        <div class="forecast-result-canvas" style="position: relative; overflow: hidden; opacity: 0.95;">
+            <div class="result-header">
+                <div style="width: 60%;">
+                    <div class="skeleton-pulse skeleton-line" style="width: 250px; height: 12px; margin-bottom: 10px;"></div>
+                    <div class="skeleton-pulse skeleton-title" style="width: 320px; height: 26px;"></div>
+                </div>
+                <div>
+                    <div class="skeleton-pulse skeleton-badge" style="width: 150px; height: 32px;"></div>
+                </div>
+            </div>
+            <div class="result-main-grid">
+                <div class="hero-price-display">
+                    <div class="skeleton-pulse skeleton-line" style="width: 150px; height: 11px; margin-bottom: 10px;"></div>
+                    <div class="skeleton-pulse skeleton-price" style="width: 220px; height: 44px; margin-bottom: 10px;"></div>
+                    <div class="skeleton-pulse skeleton-line" style="width: 280px; height: 11px;"></div>
+                </div>
+                <div class="hero-delta-group">
+                    <div class="skeleton-pulse skeleton-line" style="width: 130px; height: 11px; margin-bottom: 10px;"></div>
+                    <div class="skeleton-pulse skeleton-price" style="width: 180px; height: 36px; margin-bottom: 10px;"></div>
+                    <div class="skeleton-pulse skeleton-line" style="width: 210px; height: 11px;"></div>
+                </div>
+            </div>
+            <div class="result-footer-metrics">
+                <div class="footer-metric-item">
+                    <div class="skeleton-pulse skeleton-line" style="width: 110px; height: 10px; margin-bottom: 6px;"></div>
+                    <div class="skeleton-pulse skeleton-line" style="width: 90px; height: 18px;"></div>
+                </div>
+                <div class="footer-metric-item">
+                    <div class="skeleton-pulse skeleton-line" style="width: 120px; height: 10px; margin-bottom: 6px;"></div>
+                    <div class="skeleton-pulse skeleton-line" style="width: 100px; height: 18px;"></div>
+                </div>
+                <div class="footer-metric-item">
+                    <div class="skeleton-pulse skeleton-line" style="width: 130px; height: 10px; margin-bottom: 6px;"></div>
+                    <div class="skeleton-pulse skeleton-line" style="width: 80px; height: 18px;"></div>
+                </div>
+                <div class="footer-metric-item">
+                    <div class="skeleton-pulse skeleton-line" style="width: 140px; height: 10px; margin-bottom: 6px;"></div>
+                    <div class="skeleton-pulse skeleton-line" style="width: 70px; height: 18px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="skeleton-chart-box">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <div class="skeleton-pulse skeleton-line" style="width: 240px; height: 18px;"></div>
+                <div class="skeleton-pulse skeleton-badge" style="width: 160px; height: 24px;"></div>
+            </div>
+            <div class="skeleton-bars-row">
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 35%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 55%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 45%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 70%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 60%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 85%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 75%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 90%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 65%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 80%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 95%;"></div>
+                <div class="skeleton-pulse skeleton-bar-item" style="height: 70%;"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 12px;">
+                <div class="skeleton-pulse skeleton-line" style="width: 80px; height: 10px;"></div>
+                <div class="skeleton-pulse skeleton-line" style="width: 80px; height: 10px;"></div>
+                <div class="skeleton-pulse skeleton-line" style="width: 80px; height: 10px;"></div>
+                <div class="skeleton-pulse skeleton-line" style="width: 80px; height: 10px;"></div>
+            </div>
+        </div>
+    </div>
+    """
 
 # Helper function to generate sample stock data
 def generate_sample_stock_data(base_price=1310.0, periods=60):
@@ -1215,6 +1421,8 @@ if active_page == "Home":
         home_submit_btn = st.button("⚡ Generate AI Forecast", key="home_run_btn")
 
     if home_submit_btn:
+        home_skeleton_placeholder = st.empty()
+        home_skeleton_placeholder.markdown(get_prediction_skeleton_html(home_company, home_ticker), unsafe_allow_html=True)
         with st.spinner(f"Executing Machine Learning Pipeline for {home_company}..."):
             try:
                 model_close, scaler, metrics = load_models_for_ticker(home_ticker, period="5y")
@@ -1361,15 +1569,17 @@ elif active_page == "Prediction":
         submit_btn = st.button("⚡ Run AI Forecast Engine", key="pred_run_btn")
 
     if submit_btn:
+        pred_skeleton_slot = st.empty()
+        pred_skeleton_slot.markdown(get_prediction_skeleton_html(company_name, ticker), unsafe_allow_html=True)
         with st.status(f"Executing Machine Learning Pipeline for {company_name} ({ticker})...", expanded=True) as status_box:
             try:
                 st.write("1. Fetching multi-year historical OHLCV data from National Stock Exchange...")
                 model_close, scaler, metrics = load_models_for_ticker(ticker, period="5y")
                 df_fetch = fetch_stock_data(ticker, period="1y")
-                time.sleep(0.2)
+                time.sleep(0.15)
                 
                 st.write("2. Synthesizing 9 technical indicators (SMA 5, SMA 20, Daily Spread, Intraday Return)...")
-                time.sleep(0.2)
+                time.sleep(0.15)
                 
                 st.write("3. Applying Z-Score Normalization (`StandardScaler`)...")
                 time.sleep(0.1)
