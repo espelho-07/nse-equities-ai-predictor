@@ -16,7 +16,7 @@ from train_model import prepare_features, train_and_save_model
 
 # Page Configuration
 st.set_page_config(
-    page_title="EQUITY·AI — Intelligent ML Forecasting Engine",
+    page_title="EQUITY·AI — Academic ML Forecasting for NSE Stocks",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -25,7 +25,7 @@ st.set_page_config(
 # Helper function to render HTML safely without markdown code-block triggers
 def render_html(html_str):
     """
-    Renders HTML safely by stripping all leading indentation.
+    Renders HTML safely by stripping all leading indentation from every line.
     Prevents Python-Markdown from accidentally interpreting 4-space indentation as a <pre><code> block.
     """
     cleaned_lines = [line.strip() for line in html_str.strip().split("\n")]
@@ -51,7 +51,7 @@ components.html("""
 </script>
 """, height=0, width=0)
 
-# Academic ML Product Design System & Strict Light Styling
+# Website-Style Academic ML Design System & Strict Light Theme
 render_html("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
@@ -90,7 +90,7 @@ header[data-testid="stHeader"] {
 
 .block-container {
     padding-top: 1rem !important;
-    padding-bottom: 3rem !important;
+    padding-bottom: 3.5rem !important;
     padding-left: 2rem !important;
     padding-right: 2rem !important;
     max-width: 1320px !important;
@@ -103,55 +103,58 @@ header[data-testid="stHeader"] {
 }
 
 /* ========================================= */
-/* PREMIUM STICKY-STYLE WEBSITE NAVBAR       */
+/* PREMIUM WEBSITE HEADER & BRAND BAR        */
 /* ========================================= */
-.navbar-container {
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 12px 20px;
-    margin-bottom: 1.25rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+.site-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 0 16px 0;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 12px;
     flex-wrap: wrap;
     gap: 14px;
 }
 
-.navbar-brand-section {
+.site-brand {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.navbar-logo {
+.brand-icon {
     background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     color: #ffffff;
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 800;
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
 }
 
-.navbar-brand-title {
+.brand-title-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 800;
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     color: #0f172a;
     letter-spacing: -0.4px;
     margin: 0;
     display: flex;
     align-items: center;
     gap: 8px;
+    line-height: 1.1;
 }
 
-.navbar-badge {
+.brand-badge {
     background: #eff6ff;
     color: #2563eb;
     border: 1px solid #bfdbfe;
@@ -162,21 +165,21 @@ header[data-testid="stHeader"] {
     letter-spacing: 0.3px;
 }
 
-.navbar-subtitle {
-    font-size: 0.78rem;
+.brand-subtitle {
+    font-size: 0.8rem;
     color: #64748b;
-    margin-top: 1px;
+    margin-top: 3px;
     font-weight: 500;
 }
 
-.navbar-status-section {
+.header-status-area {
     display: flex;
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
 }
 
-.nav-market-pill-live {
+.market-live-pill {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -189,7 +192,7 @@ header[data-testid="stHeader"] {
     border-radius: 20px;
 }
 
-.nav-market-pill-closed {
+.market-closed-pill {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -218,7 +221,7 @@ header[data-testid="stHeader"] {
     100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
 }
 
-.nav-clock-pill {
+.clock-pill {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     color: #334155;
@@ -229,13 +232,66 @@ header[data-testid="stHeader"] {
     border-radius: 20px;
 }
 
+/* ========================================= */
+/* WEBSITE HORIZONTAL NAVBAR STYLING         */
+/* ========================================= */
+div[data-testid="stSegmentedControl"],
+div[data-testid="stSegmentedControl"] > div,
+[data-baseweb="button-group"] {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
+    margin-bottom: 2rem !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    gap: 4px !important;
+}
+
+div[data-testid="stSegmentedControl"] button,
+[data-baseweb="button-group"] button,
+[data-baseweb="button-group"] > div > button {
+    background-color: transparent !important;
+    color: #475569 !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    border: none !important;
+    padding: 8px 16px !important;
+    transition: all 0.15s ease !important;
+}
+
+div[data-testid="stSegmentedControl"] button:hover,
+[data-baseweb="button-group"] button:hover {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+div[data-testid="stSegmentedControl"] button[aria-checked="true"],
+div[data-testid="stSegmentedControl"] button[data-selected="true"],
+div[data-testid="stSegmentedControl"] button[aria-selected="true"],
+[data-baseweb="button-group"] button[aria-checked="true"],
+[data-baseweb="button-group"] button[data-selected="true"] {
+    background: #2563eb !important;
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25) !important;
+    border: none !important;
+}
+
+div[data-testid="stSegmentedControl"] button[aria-checked="true"] *,
+div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
+    color: #ffffff !important;
+}
+
 /* Secondary Market Overview Bar */
 .market-ticker-subbar {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     padding: 8px 16px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -286,11 +342,39 @@ header[data-testid="stHeader"] {
     border-radius: 4px;
 }
 
-/* Hero Section */
-.hero-wrapper {
-    padding: 0.5rem 0 1.5rem 0;
-    border-bottom: 1px solid var(--border-subtle);
-    margin-bottom: 1.75rem;
+/* Website Section Header */
+.page-header-wrap {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.page-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.4rem;
+    line-height: 1.2;
+}
+
+.page-subtitle {
+    font-size: 0.96rem;
+    color: #64748b;
+    line-height: 1.55;
+    max-width: 900px;
+    margin: 0;
+}
+
+/* Home Hero Section */
+.home-hero-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
 }
 
 .hero-pill {
@@ -304,17 +388,17 @@ header[data-testid="stHeader"] {
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 600;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
 }
 
 .hero-heading {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 2.25rem;
+    font-size: 2.6rem;
     font-weight: 800;
     color: #0f172a;
-    line-height: 1.2;
+    line-height: 1.15;
     letter-spacing: -0.8px;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.8rem;
 }
 
 .hero-heading span {
@@ -322,122 +406,86 @@ header[data-testid="stHeader"] {
 }
 
 .hero-lead {
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 1.08rem;
+    line-height: 1.65;
     color: #334155;
     max-width: 860px;
+    margin-bottom: 1.75rem;
+}
+
+/* Project Facts Overview Strip */
+.project-facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f1f5f9;
+}
+
+.fact-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.fact-label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 4px;
+}
+
+.fact-val {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #0f172a;
+}
+
+/* Home Feature Preview Cards */
+.feature-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+    margin: 1.5rem 0 2rem 0;
+}
+
+.preview-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.preview-card-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #0f172a;
+    margin-bottom: 0.4rem;
+}
+
+.preview-card-desc {
+    font-size: 0.88rem;
+    color: #475569;
+    line-height: 1.5;
     margin-bottom: 1rem;
 }
 
-.hero-meta-strip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    padding-top: 0.25rem;
-}
-
-.hero-meta-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.82rem;
-    color: #64748b;
-    font-weight: 500;
-}
-
-.hero-meta-item strong {
-    color: #0f172a;
-    font-weight: 700;
-}
-
-/* Website Tab Navigation */
-div[data-testid="stSegmentedControl"],
-div[data-testid="stSegmentedControl"] > div,
-[data-baseweb="button-group"] {
-    background-color: #f8fafc !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 12px !important;
-    padding: 5px !important;
-    margin-bottom: 1.75rem !important;
-    gap: 6px !important;
-}
-
-div[data-testid="stSegmentedControl"] button,
-[data-baseweb="button-group"] button,
-[data-baseweb="button-group"] > div > button {
-    background-color: transparent !important;
-    color: #475569 !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    font-size: 0.88rem !important;
-    border: none !important;
-    padding: 8px 18px !important;
-    transition: all 0.2s ease !important;
-}
-
-div[data-testid="stSegmentedControl"] button:hover,
-[data-baseweb="button-group"] button:hover {
-    background-color: #ffffff !important;
-    color: #0f172a !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-}
-
-div[data-testid="stSegmentedControl"] button[aria-checked="true"],
-div[data-testid="stSegmentedControl"] button[data-selected="true"],
-div[data-testid="stSegmentedControl"] button[aria-selected="true"],
-[data-baseweb="button-group"] button[aria-checked="true"],
-[data-baseweb="button-group"] button[data-selected="true"] {
-    background: #ffffff !important;
-    background-color: #ffffff !important;
-    color: #2563eb !important;
-    font-weight: 700 !important;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
-    border: 1px solid #e2e8f0 !important;
-}
-
-div[data-testid="stSegmentedControl"] button[aria-checked="true"] *,
-div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
-    color: #2563eb !important;
-}
-
-/* Section Titles */
-.academic-section {
-    margin-bottom: 1.75rem;
-}
-
-.section-title {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1.35rem;
-    font-weight: 800;
-    color: #0f172a;
-    letter-spacing: -0.4px;
-    margin-bottom: 0.3rem;
-}
-
-.section-subtitle {
-    font-size: 0.9rem;
-    color: #64748b;
-    margin-bottom: 1.25rem;
-    line-height: 1.5;
-}
-
-/* Prediction Interactive Control Box */
-.control-panel {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1.75rem;
-}
-
-/* Prediction Output Hero Canvas */
+/* Prediction Output Canvas */
 .forecast-result-canvas {
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 16px;
-    padding: 1.75rem 2rem;
+    padding: 2rem 2.25rem;
     box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
-    margin-bottom: 1.75rem;
+    margin-bottom: 2rem;
 }
 
 .result-header {
@@ -462,7 +510,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .result-stock-name {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1.45rem;
+    font-size: 1.5rem;
     font-weight: 800;
     color: #0f172a;
     letter-spacing: -0.3px;
@@ -500,7 +548,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 20px;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
 }
 
 .hero-price-display {
@@ -510,7 +558,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .hero-price-value {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 3rem;
+    font-size: 3.2rem;
     font-weight: 800;
     color: #0f172a;
     line-height: 1.05;
@@ -518,7 +566,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .hero-price-caption {
-    font-size: 0.86rem;
+    font-size: 0.88rem;
     color: #64748b;
     margin-top: 6px;
     font-weight: 500;
@@ -532,7 +580,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .hero-delta-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 800;
 }
 
@@ -571,6 +619,15 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     font-size: 1.05rem;
     font-weight: 700;
     color: #1e293b;
+}
+
+/* Control Panel */
+.control-panel {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
 }
 
 /* Technical Evidence Info Blocks */
@@ -624,7 +681,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin: 1.25rem 0;
+    margin: 1.5rem 0;
 }
 
 .pipeline-stage {
@@ -709,7 +766,7 @@ li[role="option"]:hover * {
     -webkit-text-fill-color: #1d4ed8 !important;
 }
 
-/* Custom Action Button */
+/* Custom Action Buttons */
 div.stButton > button {
     background: #2563eb !important;
     background-color: #2563eb !important;
@@ -735,9 +792,9 @@ div.stButton > button:hover {
     background: #f8fafc;
     border-left: 4px solid #2563eb;
     border-radius: 0 8px 8px 0;
-    padding: 1rem 1.25rem;
-    margin: 1.25rem 0;
-    font-size: 0.86rem;
+    padding: 1.15rem 1.35rem;
+    margin: 1.5rem 0;
+    font-size: 0.88rem;
     color: #334155;
     line-height: 1.6;
 }
@@ -865,6 +922,29 @@ if "app_state" not in st.session_state:
             "history": generate_sample_stock_data(1312.0, 60)
         }
 
+# Navigation State Setup with URL Query Parameter synchronization
+PAGE_LIST = [
+    "Home",
+    "Prediction",
+    "Technical Analysis",
+    "How It Works",
+    "Model",
+    "Evaluation",
+    "Documentation"
+]
+
+# Check query param if provided
+query_page = st.query_params.get("page", None)
+if "nav_page" not in st.session_state:
+    if query_page and query_page in PAGE_LIST:
+        st.session_state["nav_page"] = query_page
+    else:
+        st.session_state["nav_page"] = "Home"
+
+def set_page(page_name):
+    st.session_state["nav_page"] = page_name
+    st.query_params["page"] = page_name
+
 # Live IST Market Operating Status (Mon-Fri, 9:00 AM - 4:00 PM IST)
 now_utc = datetime.now(timezone.utc)
 ist_time = now_utc + timedelta(hours=5, minutes=30)
@@ -874,9 +954,9 @@ minute = ist_time.minute
 is_market_open = (weekday < 5) and ((hour > 9 or (hour == 9 and minute >= 0)) and (hour < 16))
 
 if is_market_open:
-    market_badge_html = '<div class="nav-market-pill-live"><span class="pulse-circle"></span> NSE Gateway Live (9 AM - 4 PM)</div>'
+    market_badge_html = '<div class="market-live-pill"><span class="pulse-circle"></span> NSE Gateway Live (9 AM - 4 PM)</div>'
 else:
-    market_badge_html = '<div class="nav-market-pill-closed">NSE Post-Market</div>'
+    market_badge_html = '<div class="market-closed-pill">NSE Post-Market</div>'
 
 current_ist_str = ist_time.strftime('%b %d, %Y • %H:%M IST')
 
@@ -893,65 +973,38 @@ sensex_sym = "+" if sensex['pct'] >= 0 else ""
 vix_chip = "ticker-pill-down" if vix['pct'] <= 0 else "ticker-pill-up"
 vix_sym = "+" if vix['pct'] >= 0 else ""
 
-# 1. TOP PREMIUM NAVBAR
+# 1. TOP WEBSITE BRAND & STATUS HEADER
 render_html(f"""
-<div class="navbar-container">
-    <div class="navbar-brand-section">
-        <div class="navbar-logo">🧠</div>
-        <div>
-            <div class="navbar-brand-title">
+<div class="site-header">
+    <div class="site-brand">
+        <div class="brand-icon">🧠</div>
+        <div class="brand-title-wrap">
+            <div class="brand-title">
                 EQUITY·AI
-                <span class="navbar-badge">Academic ML Engine</span>
+                <span class="brand-badge">Academic ML Engine</span>
             </div>
-            <div class="navbar-subtitle">Supervised Quantitative Time-Series Forecasting for NSE Equities</div>
+            <div class="brand-subtitle">Quantitative Time-Series Machine Learning for National Stock Exchange (NSE) Equities</div>
         </div>
     </div>
-    <div class="navbar-status-section">
+    <div class="header-status-area">
         {market_badge_html}
-        <div class="nav-clock-pill">{current_ist_str}</div>
+        <div class="clock-pill">{current_ist_str}</div>
     </div>
 </div>
 """)
 
-# 2. SECONDARY REAL-TIME MARKET OVERVIEW TICKER
-render_html(f"""
-<div class="market-ticker-subbar">
-    <div class="ticker-metric">
-        <span class="ticker-title">NIFTY 50:</span>
-        <span class="ticker-value">{nifty['price']:,.2f}</span>
-        <span class="{nifty_chip}">{nifty_sym}{nifty['pct']:.2f}%</span>
-    </div>
-    <div class="ticker-metric">
-        <span class="ticker-title">SENSEX:</span>
-        <span class="ticker-value">{sensex['price']:,.2f}</span>
-        <span class="{sensex_chip}">{sensex_sym}{sensex['pct']:.2f}%</span>
-    </div>
-    <div class="ticker-metric">
-        <span class="ticker-title">INDIA VIX:</span>
-        <span class="ticker-value">{vix['price']:,.2f}</span>
-        <span class="{vix_chip}">{vix_sym}{vix['pct']:.2f}%</span>
-    </div>
-    <div class="ticker-metric">
-        <span class="ticker-title">MODEL:</span>
-        <span class="ticker-value" style="color:#2563eb;">100 Trees Random Forest</span>
-    </div>
-</div>
-""")
-
-# 3. WEBSITE-STYLE CLEAN NAVIGATION TABS
-nav_page = st.segmented_control(
-    "Navigation Menu",
-    [
-        "🔮 Prediction & Forecast",
-        "📊 Technical Evidence",
-        "🧠 How It Works",
-        "⚙️ Inside the Model",
-        "📈 Accuracy & Evaluation",
-        "📖 Project Documentation"
-    ],
-    default="🔮 Prediction & Forecast",
+# 2. WEBSITE HORIZONTAL NAVBAR
+current_nav = st.segmented_control(
+    "Website Navigation",
+    PAGE_LIST,
+    default=st.session_state["nav_page"],
     label_visibility="collapsed"
 )
+
+# Sync navigation state if user clicked the navbar
+if current_nav and current_nav != st.session_state["nav_page"]:
+    st.session_state["nav_page"] = current_nav
+    st.query_params["page"] = current_nav
 
 # Comprehensive Searchable Stock Directory (35+ Major Bluechips)
 stock_options = {
@@ -1004,34 +1057,244 @@ diff_amount = pred_close - prev_close
 diff_pct = (diff_amount / prev_close) * 100 if prev_close != 0 else 0
 is_gain = diff_amount >= 0
 
+active_page = st.session_state["nav_page"]
+
 # =========================================================================
-# TAB 1: PREDICTION & FORECAST
+# PAGE: HOME
 # =========================================================================
-if nav_page == "🔮 Prediction & Forecast":
-    # Hero Section
+if active_page == "Home":
+    # 1. Hero Section
     render_html("""
-    <div class="hero-wrapper">
+    <div class="home-hero-card">
         <div class="hero-pill">⚡ Supervised Time-Series Machine Learning</div>
         <h1 class="hero-heading">Intelligent Quantitative ML Forecasting Engine <span>for NSE Stocks</span></h1>
         <p class="hero-lead">
-            An academic machine-learning research system that analyzes historical market patterns, rolling moving averages, 
-            and technical indicators to forecast the next trading session's price trajectory without lookahead bias.
+            An academic machine-learning research system that analyzes historical market time-series, rolling moving averages, 
+            and engineered technical indicators to forecast the next trading session's closing price with zero lookahead bias.
         </p>
-        <div class="hero-meta-strip">
-            <div class="hero-meta-item"><span>Ensemble Model:</span> <strong>Random Forest (100 Trees)</strong></div>
-            <div class="hero-meta-item"><span>Feature Space:</span> <strong>9 Engineered Lag Indicators</strong></div>
-            <div class="hero-meta-item"><span>Target Variable:</span> <strong>Next Close Price (t+1)</strong></div>
-            <div class="hero-meta-item"><span>Data Ingestion:</span> <strong>National Stock Exchange (NSE)</strong></div>
+        <div class="project-facts-grid">
+            <div class="fact-item">
+                <span class="fact-label">Ensemble Model</span>
+                <span class="fact-val">Random Forest (100 Trees)</span>
+            </div>
+            <div class="fact-item">
+                <span class="fact-label">Feature Space</span>
+                <span class="fact-val">9 Engineered Lag Indicators</span>
+            </div>
+            <div class="fact-item">
+                <span class="fact-label">Target Variable</span>
+                <span class="fact-val">Next Close Price (t+1)</span>
+            </div>
+            <div class="fact-item">
+                <span class="fact-label">Data Ingestion</span>
+                <span class="fact-val">National Stock Exchange (NSE)</span>
+            </div>
         </div>
     </div>
     """)
+    
+    # Hero Quick Actions
+    c_btn1, c_btn2, _ = st.columns([1.8, 2.2, 4])
+    with c_btn1:
+        if st.button("🔮 Try Prediction →", key="home_cta_pred"):
+            set_page("Prediction")
+            st.rerun()
+    with c_btn2:
+        if st.button("🧠 Explore How It Works →", key="home_cta_hiw"):
+            set_page("How It Works")
+            st.rerun()
+            
+    st.markdown("<div style='margin-top: 2rem;'></div>", unsafe_allow_html=True)
+    
+    # 2. Subtle Market Snapshot Bar
+    render_html(f"""
+    <div class="market-ticker-subbar">
+        <div class="ticker-metric">
+            <span class="ticker-title">NIFTY 50:</span>
+            <span class="ticker-value">{nifty['price']:,.2f}</span>
+            <span class="{nifty_chip}">{nifty_sym}{nifty['pct']:.2f}%</span>
+        </div>
+        <div class="ticker-metric">
+            <span class="ticker-title">SENSEX:</span>
+            <span class="ticker-value">{sensex['price']:,.2f}</span>
+            <span class="{sensex_chip}">{sensex_sym}{sensex['pct']:.2f}%</span>
+        </div>
+        <div class="ticker-metric">
+            <span class="ticker-title">INDIA VIX:</span>
+            <span class="ticker-value">{vix['price']:,.2f}</span>
+            <span class="{vix_chip}">{vix_sym}{vix['pct']:.2f}%</span>
+        </div>
+        <div class="ticker-metric">
+            <span class="ticker-title">MODEL ARCHITECTURE:</span>
+            <span class="ticker-value" style="color:#2563eb;">100 Trees Random Forest</span>
+        </div>
+    </div>
+    """)
+    
+    # 3. Quick Prediction Runner Preview
+    st.markdown("### 🔮 Predict the Next Market Move")
+    st.markdown("Select an NSE equity from the catalog to run the trained 100-Tree Random Forest model:")
+    
+    render_html('<div class="control-panel">')
+    col_sel, col_custom, col_btn = st.columns([3.2, 2.2, 2.4])
+    
+    with col_sel:
+        home_sel_label = st.selectbox(
+            "Select NSE Listed Equity:", 
+            list(stock_options.keys()), 
+            index=0,
+            key="home_stock_sel"
+        )
+    
+    if stock_options[home_sel_label] == "CUSTOM":
+        with col_custom:
+            custom_t = st.text_input("Enter NSE Symbol:", value="TATAPOWER", key="home_custom_ticker").upper().strip()
+            home_ticker = custom_t + ".NS" if not custom_t.endswith(".NS") else custom_t
+            home_company = custom_t
+    else:
+        home_ticker = stock_options[home_sel_label]
+        home_company = home_sel_label.split(" (")[0]
+        with col_custom:
+            st.text_input("Exchange Ticker:", value=home_ticker, disabled=True, key="home_ticker_disp")
+            
+    with col_btn:
+        st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+        home_submit_btn = st.button("⚡ Generate AI Forecast", key="home_run_btn")
+        
+    render_html('</div>')
 
+    if home_submit_btn:
+        with st.spinner(f"Executing Machine Learning Pipeline for {home_company}..."):
+            try:
+                model_close, scaler, metrics = load_models_for_ticker(home_ticker, period="5y")
+                df_fetch = fetch_stock_data(home_ticker, period="1y")
+                
+                if not df_fetch.empty:
+                    df_recent = df_fetch.dropna().tail(30).copy()
+                    last_row = df_recent.iloc[-1]
+                    last_date_str = df_recent.index[-1].strftime('%Y-%m-%d')
+                    
+                    X_full, _, feature_cols, _ = prepare_features(df_fetch)
+                    latest_features = X_full.iloc[[-1]]
+                    latest_scaled = scaler.transform(latest_features)
+                    
+                    predicted_close_val = model_close.predict(latest_scaled)[0]
+                    mae_score = metrics['close']['mae']
+                    
+                    st.session_state["app_state"] = {
+                        "company": home_company,
+                        "ticker": home_ticker,
+                        "prev_close": round(float(last_row['Close']), 2),
+                        "prev_open": round(float(last_row['Open']), 2),
+                        "prev_high": round(float(last_row['High']), 2),
+                        "prev_low": round(float(last_row['Low']), 2),
+                        "prev_volume": int(last_row['Volume']),
+                        "pred_close": round(float(predicted_close_val), 2),
+                        "mae": round(float(mae_score), 2),
+                        "last_date": last_date_str,
+                        "history": df_fetch
+                    }
+                    set_page("Prediction")
+                    st.rerun()
+            except Exception as e:
+                st.error(f"Pipeline error: {e}")
+
+    # 4. ML Pipeline Visual Overview
+    st.markdown("<div style='margin-top: 2rem;'></div>", unsafe_allow_html=True)
+    st.markdown("### 🧠 End-to-End ML Pipeline Overview")
+    
     render_html("""
-    <div class="academic-section">
-        <h2 class="section-title">Predict the Next Market Move</h2>
-        <p class="section-subtitle">
-            Select an NSE-listed company from the catalog below or specify a custom ticker. 
-            The system will fetch real historical time-series data, compute engineered lag indicators, and execute the Random Forest ensemble model.
+    <div class="pipeline-diagram">
+        <div class="pipeline-stage">
+            <div class="stage-number">01</div>
+            <div class="stage-content">
+                <h4>1. Historical Market Ingestion</h4>
+                <p>Ingests chronological OHLCV time series from the National Stock Exchange without lookahead bias.</p>
+            </div>
+        </div>
+        <div class="pipeline-stage">
+            <div class="stage-number">02</div>
+            <div class="stage-content">
+                <h4>2. Feature Engineering & Z-Score Scaling</h4>
+                <p>Synthesizes 9 lag indicators (SMA5, SMA20, Intraday Range, Return ratio) and normalizes scales via StandardScaler.</p>
+            </div>
+        </div>
+        <div class="pipeline-stage">
+            <div class="stage-number">03</div>
+            <div class="stage-content">
+                <h4>3. Random Forest Ensemble Regression</h4>
+                <p>100 decorrelated decision trees aggregate bootstrap sub-samples to predict next-trading-day settlement.</p>
+            </div>
+        </div>
+    </div>
+    """)
+    
+    # 5. Project Deep-Dive Highlights Grid
+    st.markdown("<div style='margin-top: 2rem;'></div>", unsafe_allow_html=True)
+    st.markdown("### 📚 Project Deep Dives & Research Sections")
+    
+    col_p1, col_p2 = st.columns(2)
+    with col_p1:
+        st.markdown("""
+        <div class="preview-card">
+            <div>
+                <div class="preview-card-title">📊 Technical Evidence</div>
+                <div class="preview-card-desc">Multi-pane price and volume charts, moving average velocity, intraday volatility spread, and return conviction.</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Explore Technical Analysis →", key="card_tech"):
+            set_page("Technical Analysis")
+            st.rerun()
+            
+        st.markdown("<div style='margin-top: 1rem;'></div>", unsafe_allow_html=True)
+        st.markdown("""
+        <div class="preview-card">
+            <div>
+                <div class="preview-card-title">⚙️ Model Architecture</div>
+                <div class="preview-card-desc">In-depth inspection of 100-Tree Random Forest, Gini feature importance ranking, and an interactive What-If scenario sandbox.</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Explore Model Architecture →", key="card_model"):
+            set_page("Model")
+            st.rerun()
+            
+    with col_p2:
+        st.markdown("""
+        <div class="preview-card">
+            <div>
+                <div class="preview-card-title">📈 Accuracy & Evaluation</div>
+                <div class="preview-card-desc">Empirical assessment of MAE, RMSE, and R² scores, alongside the academic limits of financial market prediction.</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Explore Evaluation Metrics →", key="card_eval"):
+            set_page("Evaluation")
+            st.rerun()
+            
+        st.markdown("<div style='margin-top: 1rem;'></div>", unsafe_allow_html=True)
+        st.markdown("""
+        <div class="preview-card">
+            <div>
+                <div class="preview-card-title">📖 Project Documentation</div>
+                <div class="preview-card-desc">Formal academic specifications, mathematical formulations, technology stack, and viva review documentation.</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Read Full Documentation →", key="card_docs"):
+            set_page("Documentation")
+            st.rerun()
+
+# =========================================================================
+# PAGE: PREDICTION
+# =========================================================================
+elif active_page == "Prediction":
+    render_html("""
+    <div class="page-header-wrap">
+        <h1 class="page-title">Price Forecast & Prediction Engine</h1>
+        <p class="page-subtitle">
+            Execute the trained 100-Tree Random Forest ensemble to generate next-session price projections for any liquid NSE equity.
         </p>
     </div>
     """)
@@ -1045,23 +1308,24 @@ if nav_page == "🔮 Prediction & Forecast":
             "Select NSE Listed Equity:", 
             list(stock_options.keys()), 
             index=0,
-            help="Choose from 35+ liquid NSE blue-chips or select Custom Ticker"
+            help="Choose from 35+ liquid NSE blue-chips or select Custom Ticker",
+            key="pred_stock_sel"
         )
     
     if stock_options[selected_company_label] == "CUSTOM":
         with col_custom:
-            custom_t = st.text_input("Enter NSE Ticker Symbol:", value="TATAPOWER", help="E.g. TATAPOWER or TATAPOWER.NS").upper().strip()
+            custom_t = st.text_input("Enter NSE Ticker Symbol:", value="TATAPOWER", help="E.g. TATAPOWER or TATAPOWER.NS", key="pred_custom_t").upper().strip()
             ticker = custom_t + ".NS" if not custom_t.endswith(".NS") else custom_t
             company_name = custom_t
     else:
         ticker = stock_options[selected_company_label]
         company_name = selected_company_label.split(" (")[0]
         with col_custom:
-            st.text_input("Exchange Ticker:", value=ticker, disabled=True)
+            st.text_input("Exchange Ticker:", value=ticker, disabled=True, key="pred_ticker_disp")
             
     with col_btn:
         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-        submit_btn = st.button("⚡ Run AI Forecast Engine", key="run_predict_btn")
+        submit_btn = st.button("⚡ Run AI Forecast Engine", key="pred_run_btn")
         
     render_html('</div>')
 
@@ -1169,14 +1433,8 @@ if nav_page == "🔮 Prediction & Forecast":
     """)
 
     # Main Visualization: Price Action & AI Forecast
-    render_html("""
-    <div class="academic-section" style="margin-top: 1.5rem;">
-        <h3 class="section-title">Price Action & AI Forecast</h3>
-        <p class="section-subtitle">
-            Historical price movement trajectory leading into the machine learning model's forecasted target projection.
-        </p>
-    </div>
-    """)
+    st.markdown("### Price Action & AI Forecast")
+    st.markdown("50-session historical OHLC candlestick trajectory showing the seamless continuation to the machine learning model's next-day forecast:")
     
     if not df_history.empty:
         df_chart = df_history.tail(50).copy()
@@ -1214,7 +1472,7 @@ if nav_page == "🔮 Prediction & Forecast":
             paper_bgcolor="#ffffff",
             plot_bgcolor="#ffffff",
             font=dict(color="#0f172a", family="Inter, sans-serif"),
-            height=440,
+            height=450,
             margin=dict(l=15, r=15, t=20, b=15),
             xaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0", showgrid=True),
             yaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0", showgrid=True, title="Price (INR)"),
@@ -1224,14 +1482,14 @@ if nav_page == "🔮 Prediction & Forecast":
         st.plotly_chart(fig, use_container_width=True)
 
 # =========================================================================
-# TAB 2: TECHNICAL EVIDENCE
+# PAGE: TECHNICAL ANALYSIS
 # =========================================================================
-elif nav_page == "📊 Technical Evidence":
+elif active_page == "Technical Analysis":
     render_html(f"""
-    <div class="academic-section">
-        <h2 class="section-title">Technical Evidence & Indicator Signals — {company_title}</h2>
-        <p class="section-subtitle">
-            An analysis of the engineered quantitative indicators extracted from the historical time-series that drive the Random Forest decision splits.
+    <div class="page-header-wrap">
+        <h1 class="page-title">Technical Evidence & Indicator Signals — {company_title}</h1>
+        <p class="page-subtitle">
+            Quantitative time-series indicators extracted from historical market data that inform the decision splits of the Random Forest model.
         </p>
     </div>
     """)
@@ -1365,13 +1623,13 @@ elif nav_page == "📊 Technical Evidence":
         """)
 
 # =========================================================================
-# TAB 3: HOW IT WORKS
+# PAGE: HOW IT WORKS
 # =========================================================================
-elif nav_page == "🧠 How It Works":
+elif active_page == "How It Works":
     render_html("""
-    <div class="academic-section">
-        <h2 class="section-title">How EQUITY·AI Makes a Prediction</h2>
-        <p class="section-subtitle">
+    <div class="page-header-wrap">
+        <h1 class="page-title">How EQUITY·AI Makes a Prediction</h1>
+        <p class="page-subtitle">
             An end-to-end walkthrough of the quantitative data pipeline and machine learning architecture from raw market tick data to ensemble forecast.
         </p>
     </div>
@@ -1382,7 +1640,7 @@ elif nav_page == "🧠 How It Works":
         <div class="pipeline-stage">
             <div class="stage-number">01</div>
             <div class="stage-content">
-                <h4>Historical Market Data Ingestion</h4>
+                <h4>1. Historical Market Data Ingestion</h4>
                 <p>The pipeline ingests multi-year historical daily OHLCV (Open, High, Low, Close, Volume) time-series data for the selected National Stock Exchange (NSE) security using the Yahoo Finance data gateway.</p>
             </div>
         </div>
@@ -1390,7 +1648,7 @@ elif nav_page == "🧠 How It Works":
         <div class="pipeline-stage">
             <div class="stage-number">02</div>
             <div class="stage-content">
-                <h4>Data Cleaning & Temporal Alignment</h4>
+                <h4>2. Data Cleaning & Temporal Alignment</h4>
                 <p>The dataset is sorted strictly in chronological sequence. Missing trading sessions, corporate action discontinuities, and NaN entries are filtered to guarantee strict causal ordering with <strong>zero lookahead bias</strong>.</p>
             </div>
         </div>
@@ -1398,7 +1656,7 @@ elif nav_page == "🧠 How It Works":
         <div class="pipeline-stage">
             <div class="stage-number">03</div>
             <div class="stage-content">
-                <h4>Feature Engineering & Target Formulation</h4>
+                <h4>3. Feature Engineering & Target Formulation</h4>
                 <p>Computes 9 continuous numerical features: <code>Prev_Close</code>, <code>Prev_High</code>, <code>Prev_Low</code>, <code>Prev_Open</code>, <code>Prev_Volume</code>, <code>MA5</code> (5-day rolling mean), <code>MA20</code> (20-day rolling mean), <code>Daily_Range</code> (High - Low), and <code>Daily_Return</code> ((Close - Open) / Open). The prediction target is formulated as <code>Tomorrow_Close = Close(t+1)</code>.</p>
             </div>
         </div>
@@ -1406,7 +1664,7 @@ elif nav_page == "🧠 How It Works":
         <div class="pipeline-stage">
             <div class="stage-number">04</div>
             <div class="stage-content">
-                <h4>Z-Score Feature Standardization (StandardScaler)</h4>
+                <h4>4. Z-Score Feature Standardization (StandardScaler)</h4>
                 <p>Because trading volume operates on orders of 10<sup>6</sup> while price features operate on orders of 10<sup>3</sup>, features are standardized via Z-score transformation: <code>z = (x - μ) / σ</code>, ensuring stable gradient updates and unbiased split criterion evaluation.</p>
             </div>
         </div>
@@ -1414,7 +1672,7 @@ elif nav_page == "🧠 How It Works":
         <div class="pipeline-stage">
             <div class="stage-number">05</div>
             <div class="stage-content">
-                <h4>Random Forest Ensemble Regression (100 Trees)</h4>
+                <h4>5. Random Forest Ensemble Regression (100 Trees)</h4>
                 <p>The normalized feature matrix is evaluated by 100 decorrelated decision trees trained using Bootstrap Aggregation (Bagging). Each tree performs recursive binary partitioning to optimize Mean Squared Error (MSE), capturing non-linear interactions across moving averages and volume shifts.</p>
             </div>
         </div>
@@ -1422,7 +1680,7 @@ elif nav_page == "🧠 How It Works":
         <div class="pipeline-stage">
             <div class="stage-number">06</div>
             <div class="stage-content">
-                <h4>Real-Time Inference & Directional Classification</h4>
+                <h4>6. Real-Time Inference & Directional Classification</h4>
                 <p>The ensemble aggregates individual tree predictions to compute the expected next-day settlement price, calculates the expected delta percentage, and derives the directional momentum signal (Bullish Momentum vs Bearish Correction).</p>
             </div>
         </div>
@@ -1438,13 +1696,13 @@ elif nav_page == "🧠 How It Works":
     """)
 
 # =========================================================================
-# TAB 4: INSIDE THE MODEL
+# PAGE: MODEL
 # =========================================================================
-elif nav_page == "⚙️ Inside the Model":
+elif active_page == "Model":
     render_html("""
-    <div class="academic-section">
-        <h2 class="section-title">Inside the Machine Learning Model</h2>
-        <p class="section-subtitle">
+    <div class="page-header-wrap">
+        <h1 class="page-title">Inside the Machine Learning Model</h1>
+        <p class="page-subtitle">
             Inspection of the Random Forest Regressor architecture, feature importance weights, and an interactive simulation sandbox.
         </p>
     </div>
@@ -1511,11 +1769,11 @@ elif nav_page == "⚙️ Inside the Model":
     render_html('<div class="control-panel">')
     sim_c1, sim_c2 = st.columns(2)
     with sim_c1:
-        sim_open = st.slider("Simulated Open Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close), step=1.0)
-        sim_high = st.slider("Simulated High Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close*1.01), step=1.0)
+        sim_open = st.slider("Simulated Open Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close), step=1.0, key="sim_open")
+        sim_high = st.slider("Simulated High Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close*1.01), step=1.0, key="sim_high")
     with sim_c2:
-        sim_low = st.slider("Simulated Low Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close*0.99), step=1.0)
-        sim_vol = st.slider("Simulated Trading Volume (Shares):", min_value=500000, max_value=20000000, value=5000000, step=100000)
+        sim_low = st.slider("Simulated Low Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close*0.99), step=1.0, key="sim_low")
+        sim_vol = st.slider("Simulated Trading Volume (Shares):", min_value=500000, max_value=20000000, value=5000000, step=100000, key="sim_vol")
         
     try:
         model_obj, scaler_obj, _ = load_models_for_ticker("RELIANCE.NS")
@@ -1548,13 +1806,13 @@ elif nav_page == "⚙️ Inside the Model":
     render_html('</div>')
 
 # =========================================================================
-# TAB 5: ACCURACY & EVALUATION
+# PAGE: EVALUATION
 # =========================================================================
-elif nav_page == "📈 Accuracy & Evaluation":
+elif active_page == "Evaluation":
     render_html("""
-    <div class="academic-section">
-        <h2 class="section-title">How Accurate Is The Forecast?</h2>
-        <p class="section-subtitle">
+    <div class="page-header-wrap">
+        <h1 class="page-title">How Accurate Is The Forecast?</h1>
+        <p class="page-subtitle">
             An empirical assessment of model reliability, error bounds, and the inherent limits of predicting financial time series.
         </p>
     </div>
@@ -1607,13 +1865,13 @@ elif nav_page == "📈 Accuracy & Evaluation":
     """)
 
 # =========================================================================
-# TAB 6: PROJECT DOCUMENTATION
+# PAGE: DOCUMENTATION
 # =========================================================================
-elif nav_page == "📖 Project Documentation":
+elif active_page == "Documentation":
     render_html("""
-    <div class="academic-section">
-        <h2 class="section-title">About EQUITY·AI</h2>
-        <p class="section-subtitle">
+    <div class="page-header-wrap">
+        <h1 class="page-title">Project Documentation & Technical Specs</h1>
+        <p class="page-subtitle">
             Comprehensive documentation for academic evaluation, project review committee, and viva demonstration.
         </p>
     </div>
