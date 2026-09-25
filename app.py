@@ -5,6 +5,7 @@ import time
 import pandas as pd
 import numpy as np
 import streamlit as st
+import streamlit.components.v1 as components
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import yfinance as yf
@@ -20,6 +21,26 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# Force Streamlit Light Theme in browser DOM and localStorage
+components.html("""
+<script>
+    try {
+        const theme = "light";
+        window.localStorage.setItem("stActiveTheme", theme);
+        window.localStorage.setItem("stTheme", theme);
+        window.localStorage.setItem("theme", theme);
+        const doc = window.parent.document;
+        if (doc) {
+            doc.documentElement.setAttribute('data-theme', theme);
+            doc.body.setAttribute('data-theme', theme);
+            doc.documentElement.style.colorScheme = theme;
+            doc.body.style.colorScheme = theme;
+            doc.querySelectorAll('[data-theme]').forEach(el => el.setAttribute('data-theme', theme));
+        }
+    } catch(e) {}
+</script>
+""", height=0, width=0)
 
 # Custom Modern Clean Theme & Strict Color Enforcement
 st.markdown("""
@@ -275,14 +296,13 @@ div[data-testid="stMetricDelta"] span {
 
 /* 6. Form Inputs & Selectbox Forced Light */
 div[data-baseweb="select"],
-div[data-baseweb="select"] > div,
-div[data-baseweb="select"] div,
+div[data-baseweb="select"] *,
 div[data-baseweb="input"],
-div[data-baseweb="input"] > div,
-div[data-baseweb="input"] input,
-div[data-testid="stTextInput"] input,
-div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+div[data-baseweb="input"] *,
+div[data-testid="stTextInput"] *,
+div[data-testid="stSelectbox"] * {
     background-color: #ffffff !important;
+    background: #ffffff !important;
     color: #0f172a !important;
     -webkit-text-fill-color: #0f172a !important;
     border-color: #cbd5e1 !important;
@@ -295,18 +315,37 @@ div[data-baseweb="select"] svg {
     fill: #0f172a !important;
 }
 
-div[data-baseweb="popover"],
-div[data-baseweb="menu"],
+/* Global Dropdown Popover Portals */
+[data-baseweb="popover"],
+[data-baseweb="popover"] *,
+[data-baseweb="menu"],
+[data-baseweb="menu"] *,
 ul[role="listbox"],
-li[role="option"] {
+ul[role="listbox"] *,
+li[role="option"],
+li[role="option"] *,
+div[role="listbox"],
+div[role="listbox"] *,
+div[role="option"],
+div[role="option"] * {
     background-color: #ffffff !important;
+    background: #ffffff !important;
     color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
 }
 
 li[role="option"]:hover,
-li[role="option"][aria-selected="true"] {
+li[role="option"]:hover *,
+li[role="option"][aria-selected="true"],
+li[role="option"][aria-selected="true"] *,
+div[role="option"]:hover,
+div[role="option"]:hover *,
+div[role="option"][aria-selected="true"],
+div[role="option"][aria-selected="true"] * {
     background-color: #eff6ff !important;
+    background: #eff6ff !important;
     color: #1d4ed8 !important;
+    -webkit-text-fill-color: #1d4ed8 !important;
 }
 
 input:disabled,
