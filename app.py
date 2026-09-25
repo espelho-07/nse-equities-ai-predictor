@@ -16,11 +16,20 @@ from train_model import prepare_features, train_and_save_model
 
 # Page Configuration
 st.set_page_config(
-    page_title="EQUITY·AI — Intelligent ML Forecasting for NSE Stocks",
+    page_title="EQUITY·AI — Intelligent ML Forecasting Engine",
     page_icon="🧠",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# Helper function to render HTML safely without markdown code-block triggers
+def render_html(html_str):
+    """
+    Renders HTML safely by stripping all leading indentation.
+    Prevents Python-Markdown from accidentally interpreting 4-space indentation as a <pre><code> block.
+    """
+    cleaned_lines = [line.strip() for line in html_str.strip().split("\n")]
+    st.markdown("\n".join(cleaned_lines), unsafe_allow_html=True)
 
 # Force Streamlit Light Theme in browser DOM and localStorage
 components.html("""
@@ -43,7 +52,7 @@ components.html("""
 """, height=0, width=0)
 
 # Academic ML Product Design System & Strict Light Styling
-st.markdown("""
+render_html("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
@@ -80,11 +89,11 @@ header[data-testid="stHeader"] {
 }
 
 .block-container {
-    padding-top: 1.25rem !important;
+    padding-top: 1rem !important;
     padding-bottom: 3rem !important;
     padding-left: 2rem !important;
     padding-right: 2rem !important;
-    max-width: 1280px !important;
+    max-width: 1320px !important;
     margin: 0 auto !important;
 }
 
@@ -93,66 +102,81 @@ header[data-testid="stHeader"] {
     font-family: 'JetBrains Mono', monospace !important;
 }
 
-/* Top App Bar */
-.top-navbar {
+/* ========================================= */
+/* PREMIUM STICKY-STYLE WEBSITE NAVBAR       */
+/* ========================================= */
+.navbar-container {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 12px 20px;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border-subtle);
-    margin-bottom: 1.5rem;
     flex-wrap: wrap;
+    gap: 14px;
+}
+
+.navbar-brand-section {
+    display: flex;
+    align-items: center;
     gap: 12px;
 }
 
-.nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.nav-logo {
-    background: #2563eb;
+.navbar-logo {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     color: #ffffff;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 800;
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
 }
 
-.nav-title {
+.navbar-brand-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 800;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     color: #0f172a;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.4px;
     margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.nav-tag {
+.navbar-badge {
     background: #eff6ff;
     color: #2563eb;
     border: 1px solid #bfdbfe;
     font-size: 0.72rem;
     font-weight: 700;
     padding: 2px 8px;
-    border-radius: 12px;
+    border-radius: 20px;
     letter-spacing: 0.3px;
 }
 
-.nav-status {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 0.8rem;
+.navbar-subtitle {
+    font-size: 0.78rem;
     color: #64748b;
+    margin-top: 1px;
+    font-weight: 500;
 }
 
-.market-live-pill {
+.navbar-status-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.nav-market-pill-live {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -160,12 +184,12 @@ header[data-testid="stHeader"] {
     color: #15803d;
     border: 1px solid #bbf7d0;
     font-weight: 700;
-    font-size: 0.75rem;
-    padding: 3px 10px;
+    font-size: 0.76rem;
+    padding: 5px 12px;
     border-radius: 20px;
 }
 
-.market-closed-pill {
+.nav-market-pill-closed {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -173,24 +197,100 @@ header[data-testid="stHeader"] {
     color: #64748b;
     border: 1px solid #e2e8f0;
     font-weight: 600;
-    font-size: 0.75rem;
-    padding: 3px 10px;
+    font-size: 0.76rem;
+    padding: 5px 12px;
     border-radius: 20px;
 }
 
 .pulse-circle {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: #16a34a;
     display: inline-block;
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+    animation: pulse-glow 1.8s infinite;
+}
+
+@keyframes pulse-glow {
+    0% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7); }
+    70% { box-shadow: 0 0 0 5px rgba(22, 163, 74, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+}
+
+.nav-clock-pill {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+}
+
+/* Secondary Market Overview Bar */
+.market-ticker-subbar {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 16px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ticker-metric {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.ticker-title {
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.ticker-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.ticker-pill-up {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+.ticker-pill-down {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
 }
 
 /* Hero Section */
 .hero-wrapper {
-    padding: 1.5rem 0 2rem 0;
+    padding: 0.5rem 0 1.5rem 0;
     border-bottom: 1px solid var(--border-subtle);
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
 }
 
 .hero-pill {
@@ -204,17 +304,17 @@ header[data-testid="stHeader"] {
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .hero-heading {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 2.5rem;
+    font-size: 2.25rem;
     font-weight: 800;
     color: #0f172a;
-    line-height: 1.15;
+    line-height: 1.2;
     letter-spacing: -0.8px;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.6rem;
 }
 
 .hero-heading span {
@@ -222,18 +322,18 @@ header[data-testid="stHeader"] {
 }
 
 .hero-lead {
-    font-size: 1.05rem;
+    font-size: 1rem;
     line-height: 1.6;
     color: #334155;
-    max-width: 820px;
-    margin-bottom: 1.25rem;
+    max-width: 860px;
+    margin-bottom: 1rem;
 }
 
 .hero-meta-strip {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
-    padding-top: 0.5rem;
+    padding-top: 0.25rem;
 }
 
 .hero-meta-item {
@@ -258,7 +358,7 @@ div[data-testid="stSegmentedControl"] > div,
     border: 1px solid #e2e8f0 !important;
     border-radius: 12px !important;
     padding: 5px !important;
-    margin-bottom: 2rem !important;
+    margin-bottom: 1.75rem !important;
     gap: 6px !important;
 }
 
@@ -300,24 +400,24 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     color: #2563eb !important;
 }
 
-/* Section Container Styling */
+/* Section Titles */
 .academic-section {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.75rem;
 }
 
 .section-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1.45rem;
+    font-size: 1.35rem;
     font-weight: 800;
     color: #0f172a;
     letter-spacing: -0.4px;
-    margin-bottom: 0.35rem;
+    margin-bottom: 0.3rem;
 }
 
 .section-subtitle {
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     color: #64748b;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     line-height: 1.5;
 }
 
@@ -327,7 +427,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 1.25rem 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
 }
 
 /* Prediction Output Hero Canvas */
@@ -335,9 +435,9 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 16px;
-    padding: 2rem 2.25rem;
+    padding: 1.75rem 2rem;
     box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
-    margin-bottom: 2rem;
+    margin-bottom: 1.75rem;
 }
 
 .result-header {
@@ -352,7 +452,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .result-target-label {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 700;
     color: #64748b;
     text-transform: uppercase;
@@ -362,16 +462,10 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .result-stock-name {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.45rem;
     font-weight: 800;
     color: #0f172a;
     letter-spacing: -0.3px;
-}
-
-.result-badge-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .signal-chip-bull {
@@ -406,7 +500,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 20px;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
 }
 
 .hero-price-display {
@@ -416,7 +510,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .hero-price-value {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 3.2rem;
+    font-size: 3rem;
     font-weight: 800;
     color: #0f172a;
     line-height: 1.05;
@@ -424,7 +518,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .hero-price-caption {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     color: #64748b;
     margin-top: 6px;
     font-weight: 500;
@@ -438,7 +532,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .hero-delta-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 800;
 }
 
@@ -452,7 +546,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .result-footer-metrics {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
     gap: 1.25rem;
     padding-top: 1.25rem;
     border-top: 1px solid #f1f5f9;
@@ -464,7 +558,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .footer-metric-label {
-    font-size: 0.75rem;
+    font-size: 0.74rem;
     font-weight: 600;
     color: #64748b;
     text-transform: uppercase;
@@ -486,11 +580,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     border-radius: 12px;
     padding: 1.25rem 1.5rem;
     margin-bottom: 1rem;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.indicator-block:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
 .indicator-header {
@@ -501,7 +591,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .indicator-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 700;
     color: #0f172a;
 }
@@ -509,7 +599,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 .indicator-val-badge {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     padding: 3px 10px;
     border-radius: 6px;
     background: #eff6ff;
@@ -518,7 +608,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .indicator-desc {
-    font-size: 0.86rem;
+    font-size: 0.85rem;
     color: #475569;
     line-height: 1.5;
 }
@@ -529,12 +619,12 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     margin-top: 6px;
 }
 
-/* Educational Flow Steps */
+/* Educational Pipeline Diagram */
 .pipeline-diagram {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin: 1.5rem 0;
+    margin: 1.25rem 0;
 }
 
 .pipeline-stage {
@@ -564,14 +654,14 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .stage-content h4 {
-    font-size: 1rem;
+    font-size: 0.98rem;
     font-weight: 700;
     color: #0f172a;
     margin: 0 0 4px 0;
 }
 
 .stage-content p {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     color: #475569;
     line-height: 1.5;
     margin: 0;
@@ -625,10 +715,10 @@ div.stButton > button {
     background-color: #2563eb !important;
     color: #ffffff !important;
     font-weight: 700 !important;
-    font-size: 0.95rem !important;
+    font-size: 0.92rem !important;
     border-radius: 10px !important;
     border: none !important;
-    padding: 10px 24px !important;
+    padding: 10px 22px !important;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;
     width: 100% !important;
     transition: all 0.2s ease !important;
@@ -646,8 +736,8 @@ div.stButton > button:hover {
     border-left: 4px solid #2563eb;
     border-radius: 0 8px 8px 0;
     padding: 1rem 1.25rem;
-    margin: 1.5rem 0;
-    font-size: 0.88rem;
+    margin: 1.25rem 0;
+    font-size: 0.86rem;
     color: #334155;
     line-height: 1.6;
 }
@@ -656,7 +746,7 @@ div.stButton > button:hover {
     color: #0f172a;
 }
 </style>
-""", unsafe_allow_html=True)
+""")
 
 # Helper function to generate sample stock data
 def generate_sample_stock_data(base_price=1310.0, periods=60):
@@ -784,48 +874,71 @@ minute = ist_time.minute
 is_market_open = (weekday < 5) and ((hour > 9 or (hour == 9 and minute >= 0)) and (hour < 16))
 
 if is_market_open:
-    market_badge_html = '<div class="market-live-pill"><span class="pulse-circle"></span> NSE Live Session</div>'
+    market_badge_html = '<div class="nav-market-pill-live"><span class="pulse-circle"></span> NSE Gateway Live (9 AM - 4 PM)</div>'
 else:
-    market_badge_html = '<div class="market-closed-pill">NSE Post-Market</div>'
+    market_badge_html = '<div class="nav-market-pill-closed">NSE Post-Market</div>'
 
 current_ist_str = ist_time.strftime('%b %d, %Y • %H:%M IST')
 
-# Top Minimalist Navigation Bar
-st.markdown(f"""
-<div class="top-navbar">
-    <div class="nav-brand">
-        <div class="nav-logo">🧠</div>
+# Fetch real-time indices
+indices = fetch_live_market_indices()
+nifty = indices.get('^NSEI', {'price': 23140.50, 'diff': 77.40, 'pct': 0.34})
+sensex = indices.get('^BSESN', {'price': 73895.74, 'diff': 315.20, 'pct': 0.43})
+vix = indices.get('^INDIAVIX', {'price': 12.16, 'diff': -0.53, 'pct': -4.18})
+
+nifty_chip = "ticker-pill-up" if nifty['pct'] >= 0 else "ticker-pill-down"
+nifty_sym = "+" if nifty['pct'] >= 0 else ""
+sensex_chip = "ticker-pill-up" if sensex['pct'] >= 0 else "ticker-pill-down"
+sensex_sym = "+" if sensex['pct'] >= 0 else ""
+vix_chip = "ticker-pill-down" if vix['pct'] <= 0 else "ticker-pill-up"
+vix_sym = "+" if vix['pct'] >= 0 else ""
+
+# 1. TOP PREMIUM NAVBAR
+render_html(f"""
+<div class="navbar-container">
+    <div class="navbar-brand-section">
+        <div class="navbar-logo">🧠</div>
         <div>
-            <span class="nav-title">EQUITY·AI</span>
-            <span class="nav-tag">Academic ML Project</span>
+            <div class="navbar-brand-title">
+                EQUITY·AI
+                <span class="navbar-badge">Academic ML Engine</span>
+            </div>
+            <div class="navbar-subtitle">Supervised Quantitative Time-Series Forecasting for NSE Equities</div>
         </div>
     </div>
-    <div class="nav-status">
+    <div class="navbar-status-section">
         {market_badge_html}
-        <span class="mono-val">{current_ist_str}</span>
+        <div class="nav-clock-pill">{current_ist_str}</div>
     </div>
 </div>
-""", unsafe_allow_html=True)
+""")
 
-# Hero Section: Educational ML Storytelling Header
-st.markdown("""
-<div class="hero-wrapper">
-    <div class="hero-pill">⚡ Supervised Time-Series Machine Learning</div>
-    <h1 class="hero-heading">Intelligent Quantitative ML Forecasting Engine <span>for NSE Stocks</span></h1>
-    <p class="hero-lead">
-        An academic machine-learning research system that analyzes historical market patterns, rolling moving averages, 
-        and technical indicators to forecast the next trading session's price trajectory without lookahead bias.
-    </p>
-    <div class="hero-meta-strip">
-        <div class="hero-meta-item"><span>Ensemble Model:</span> <strong>Random Forest (100 Trees)</strong></div>
-        <div class="hero-meta-item"><span>Feature Space:</span> <strong>9 Engineered Lag Indicators</strong></div>
-        <div class="hero-meta-item"><span>Target Variable:</span> <strong>Next Close Price (t+1)</strong></div>
-        <div class="hero-meta-item"><span>Data Ingestion:</span> <strong>National Stock Exchange (NSE)</strong></div>
+# 2. SECONDARY REAL-TIME MARKET OVERVIEW TICKER
+render_html(f"""
+<div class="market-ticker-subbar">
+    <div class="ticker-metric">
+        <span class="ticker-title">NIFTY 50:</span>
+        <span class="ticker-value">{nifty['price']:,.2f}</span>
+        <span class="{nifty_chip}">{nifty_sym}{nifty['pct']:.2f}%</span>
+    </div>
+    <div class="ticker-metric">
+        <span class="ticker-title">SENSEX:</span>
+        <span class="ticker-value">{sensex['price']:,.2f}</span>
+        <span class="{sensex_chip}">{sensex_sym}{sensex['pct']:.2f}%</span>
+    </div>
+    <div class="ticker-metric">
+        <span class="ticker-title">INDIA VIX:</span>
+        <span class="ticker-value">{vix['price']:,.2f}</span>
+        <span class="{vix_chip}">{vix_sym}{vix['pct']:.2f}%</span>
+    </div>
+    <div class="ticker-metric">
+        <span class="ticker-title">MODEL:</span>
+        <span class="ticker-value" style="color:#2563eb;">100 Trees Random Forest</span>
     </div>
 </div>
-""", unsafe_allow_html=True)
+""")
 
-# Main Navigation (Website Style Tabs)
+# 3. WEBSITE-STYLE CLEAN NAVIGATION TABS
 nav_page = st.segmented_control(
     "Navigation Menu",
     [
@@ -895,7 +1008,25 @@ is_gain = diff_amount >= 0
 # TAB 1: PREDICTION & FORECAST
 # =========================================================================
 if nav_page == "🔮 Prediction & Forecast":
-    st.markdown("""
+    # Hero Section
+    render_html("""
+    <div class="hero-wrapper">
+        <div class="hero-pill">⚡ Supervised Time-Series Machine Learning</div>
+        <h1 class="hero-heading">Intelligent Quantitative ML Forecasting Engine <span>for NSE Stocks</span></h1>
+        <p class="hero-lead">
+            An academic machine-learning research system that analyzes historical market patterns, rolling moving averages, 
+            and technical indicators to forecast the next trading session's price trajectory without lookahead bias.
+        </p>
+        <div class="hero-meta-strip">
+            <div class="hero-meta-item"><span>Ensemble Model:</span> <strong>Random Forest (100 Trees)</strong></div>
+            <div class="hero-meta-item"><span>Feature Space:</span> <strong>9 Engineered Lag Indicators</strong></div>
+            <div class="hero-meta-item"><span>Target Variable:</span> <strong>Next Close Price (t+1)</strong></div>
+            <div class="hero-meta-item"><span>Data Ingestion:</span> <strong>National Stock Exchange (NSE)</strong></div>
+        </div>
+    </div>
+    """)
+
+    render_html("""
     <div class="academic-section">
         <h2 class="section-title">Predict the Next Market Move</h2>
         <p class="section-subtitle">
@@ -903,10 +1034,10 @@ if nav_page == "🔮 Prediction & Forecast":
             The system will fetch real historical time-series data, compute engineered lag indicators, and execute the Random Forest ensemble model.
         </p>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     # Prediction Interactive Control Box
-    st.markdown('<div class="control-panel">', unsafe_allow_html=True)
+    render_html('<div class="control-panel">')
     col_sel, col_custom, col_btn = st.columns([3.2, 2.2, 2.4])
     
     with col_sel:
@@ -932,7 +1063,7 @@ if nav_page == "🔮 Prediction & Forecast":
         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
         submit_btn = st.button("⚡ Run AI Forecast Engine", key="run_predict_btn")
         
-    st.markdown('</div>', unsafe_allow_html=True)
+    render_html('</div>')
 
     if submit_btn:
         with st.status(f"Executing Machine Learning Pipeline for {company_name} ({ticker})...", expanded=True) as status_box:
@@ -990,21 +1121,20 @@ if nav_page == "🔮 Prediction & Forecast":
     delta_color_class = "delta-green-text" if is_gain else "delta-red-text"
     delta_sign = "+" if is_gain else ""
 
-    st.markdown(f"""
+    render_html(f"""
     <div class="forecast-result-canvas">
         <div class="result-header">
             <div>
                 <div class="result-target-label">Model Inference Output • Target Session (t+1)</div>
                 <div class="result-stock-name">{company_title} <span style="font-family:'JetBrains Mono'; font-size:1.05rem; font-weight:600; color:#64748b;">({state['ticker']})</span></div>
             </div>
-            <div class="result-badge-container">
+            <div>
                 <div class="{signal_chip_class}">
                     <span>{signal_icon}</span>
                     <span>{signal_label}</span>
                 </div>
             </div>
         </div>
-        
         <div class="result-main-grid">
             <div class="hero-price-display">
                 <span class="result-target-label">Forecasted Closing Price</span>
@@ -1017,7 +1147,6 @@ if nav_page == "🔮 Prediction & Forecast":
                 <span class="hero-price-caption">Relative to reference close of ₹{prev_close:,.2f}</span>
             </div>
         </div>
-        
         <div class="result-footer-metrics">
             <div class="footer-metric-item">
                 <span class="footer-metric-label">Reference Close Date</span>
@@ -1037,17 +1166,17 @@ if nav_page == "🔮 Prediction & Forecast":
             </div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
     # Main Visualization: Price Action & AI Forecast
-    st.markdown("""
+    render_html("""
     <div class="academic-section" style="margin-top: 1.5rem;">
         <h3 class="section-title">Price Action & AI Forecast</h3>
         <p class="section-subtitle">
             Historical price movement trajectory leading into the machine learning model's forecasted target projection.
         </p>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     if not df_history.empty:
         df_chart = df_history.tail(50).copy()
@@ -1098,14 +1227,14 @@ if nav_page == "🔮 Prediction & Forecast":
 # TAB 2: TECHNICAL EVIDENCE
 # =========================================================================
 elif nav_page == "📊 Technical Evidence":
-    st.markdown(f"""
+    render_html(f"""
     <div class="academic-section">
         <h2 class="section-title">Technical Evidence & Indicator Signals — {company_title}</h2>
         <p class="section-subtitle">
             An analysis of the engineered quantitative indicators extracted from the historical time-series that drive the Random Forest decision splits.
         </p>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     if not df_history.empty:
         df_ind = df_history.tail(60).copy()
@@ -1168,7 +1297,7 @@ elif nav_page == "📊 Technical Evidence":
         vol_ratio = (vol_curr / avg_vol) if avg_vol > 0 else 1.0
         vol_status = f"Trading at {vol_ratio:.2f}x of 60-day average volume"
         
-        st.markdown(f"""
+        render_html(f"""
         <div class="indicator-block">
             <div class="indicator-header">
                 <span class="indicator-title">1. 5-Day Simple Moving Average (SMA 5)</span>
@@ -1233,22 +1362,22 @@ elif nav_page == "📊 Technical Evidence":
                 Signal Interpretation: {vol_status}
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
 # =========================================================================
 # TAB 3: HOW IT WORKS
 # =========================================================================
 elif nav_page == "🧠 How It Works":
-    st.markdown("""
+    render_html("""
     <div class="academic-section">
         <h2 class="section-title">How EQUITY·AI Makes a Prediction</h2>
         <p class="section-subtitle">
             An end-to-end walkthrough of the quantitative data pipeline and machine learning architecture from raw market tick data to ensemble forecast.
         </p>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
-    st.markdown("""
+    render_html("""
     <div class="pipeline-diagram">
         <div class="pipeline-stage">
             <div class="stage-number">01</div>
@@ -1298,56 +1427,56 @@ elif nav_page == "🧠 How It Works":
             </div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
-    st.markdown("""
+    render_html("""
     <div class="academic-callout">
         <strong>Mathematical Formulation:</strong> The ensemble model seeks to learn the conditional expectation function 
         <code>E[Close_{t+1} | X_t]</code> where <code>X_t = [Close_t, High_t, Low_t, Open_t, Volume_t, MA5_t, MA20_t, Range_t, Return_t]</code>. 
         The final prediction is the average across all <i>B = 100</i> decision trees: <code>ŷ = (1 / B) ∑_{b=1}^{B} T_b(X_t)</code>.
     </div>
-    """, unsafe_allow_html=True)
+    """)
 
 # =========================================================================
 # TAB 4: INSIDE THE MODEL
 # =========================================================================
 elif nav_page == "⚙️ Inside the Model":
-    st.markdown("""
+    render_html("""
     <div class="academic-section">
         <h2 class="section-title">Inside the Machine Learning Model</h2>
         <p class="section-subtitle">
             Inspection of the Random Forest Regressor architecture, feature importance weights, and an interactive simulation sandbox.
         </p>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     # Model Specs Section
     st.markdown("### Ensemble Hyperparameters & Training Specs")
     col_s1, col_s2, col_s3 = st.columns(3)
     with col_s1:
-        st.markdown("""
+        render_html("""
         <div class="indicator-block">
             <div class="indicator-title">Algorithm</div>
             <div class="mono-val" style="font-size:1.15rem; font-weight:700; color:#2563eb; margin: 4px 0;">RandomForestRegressor</div>
             <div class="indicator-desc">Ensemble of 100 bootstrap-aggregated decision trees (scikit-learn).</div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
     with col_s2:
-        st.markdown("""
+        render_html("""
         <div class="indicator-block">
             <div class="indicator-title">Splitting Strategy</div>
             <div class="mono-val" style="font-size:1.15rem; font-weight:700; color:#0f172a; margin: 4px 0;">80% Train / 20% Test</div>
             <div class="indicator-desc">Strict forward-chaining temporal partition without future data leakage.</div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
     with col_s3:
-        st.markdown("""
+        render_html("""
         <div class="indicator-block">
             <div class="indicator-title">Feature Scaler</div>
             <div class="mono-val" style="font-size:1.15rem; font-weight:700; color:#0f172a; margin: 4px 0;">StandardScaler</div>
             <div class="indicator-desc">Zero-mean, unit-variance Gaussian transformation across all 9 dimensions.</div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
         
     st.markdown("<div style='margin-top: 1.5rem;'></div>", unsafe_allow_html=True)
     st.markdown("### Feature Importance Ranking")
@@ -1379,96 +1508,95 @@ elif nav_page == "⚙️ Inside the Model":
     st.markdown("### Interactive Model Simulation Sandbox")
     st.markdown("Adjust hypothetical inputs below to observe how the trained model updates its forecast in real time:")
     
-    with st.container():
-        st.markdown('<div class="control-panel">', unsafe_allow_html=True)
-        sim_c1, sim_c2 = st.columns(2)
-        with sim_c1:
-            sim_open = st.slider("Simulated Open Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close), step=1.0)
-            sim_high = st.slider("Simulated High Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close*1.01), step=1.0)
-        with sim_c2:
-            sim_low = st.slider("Simulated Low Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close*0.99), step=1.0)
-            sim_vol = st.slider("Simulated Trading Volume (Shares):", min_value=500000, max_value=20000000, value=5000000, step=100000)
-            
-        try:
-            model_obj, scaler_obj, _ = load_models_for_ticker("RELIANCE.NS")
-            sim_ma5 = sim_open
-            sim_ma20 = sim_open
-            sim_range = sim_high - sim_low
-            sim_ret = (sim_open - prev_close) / prev_close if prev_close != 0 else 0
-            
-            sim_df = pd.DataFrame([{
-                'Prev_Close': prev_close, 'Prev_High': sim_high, 'Prev_Low': sim_low,
-                'Prev_Open': sim_open, 'Prev_Volume': sim_vol, 'MA5': sim_ma5,
-                'MA20': sim_ma20, 'Daily_Range': sim_range, 'Daily_Return': sim_ret
-            }])
-            sim_scaled = scaler_obj.transform(sim_df)
-            sim_pred = model_obj.predict(sim_scaled)[0]
-            
-            sim_diff = sim_pred - prev_close
-            sim_diff_pct = (sim_diff / prev_close) * 100 if prev_close != 0 else 0
-            sim_color = "#15803d" if sim_diff >= 0 else "#b91c1c"
-            
-            st.markdown(f"""
-            <div style="background:#ffffff; border:1px solid #bfdbfe; border-radius:10px; padding:16px 20px; margin-top:14px;">
-                <span style="color:#1e3a8a; font-weight:700; font-size:0.95rem;">Simulated Prediction Output: </span>
-                <span class="mono-val" style="font-weight:800; font-size:1.3rem; color:#0f172a; margin-left:8px;">₹{sim_pred:,.2f}</span>
-                <span class="mono-val" style="font-weight:700; font-size:0.95rem; color:{sim_color}; margin-left:12px;">({sim_diff:+,.2f} ₹ / {sim_diff_pct:+.2f}%)</span>
-            </div>
-            """, unsafe_allow_html=True)
-        except Exception:
-            st.info("Interactive simulation ready.")
-        st.markdown('</div>', unsafe_allow_html=True)
+    render_html('<div class="control-panel">')
+    sim_c1, sim_c2 = st.columns(2)
+    with sim_c1:
+        sim_open = st.slider("Simulated Open Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close), step=1.0)
+        sim_high = st.slider("Simulated High Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close*1.01), step=1.0)
+    with sim_c2:
+        sim_low = st.slider("Simulated Low Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close*0.99), step=1.0)
+        sim_vol = st.slider("Simulated Trading Volume (Shares):", min_value=500000, max_value=20000000, value=5000000, step=100000)
+        
+    try:
+        model_obj, scaler_obj, _ = load_models_for_ticker("RELIANCE.NS")
+        sim_ma5 = sim_open
+        sim_ma20 = sim_open
+        sim_range = sim_high - sim_low
+        sim_ret = (sim_open - prev_close) / prev_close if prev_close != 0 else 0
+        
+        sim_df = pd.DataFrame([{
+            'Prev_Close': prev_close, 'Prev_High': sim_high, 'Prev_Low': sim_low,
+            'Prev_Open': sim_open, 'Prev_Volume': sim_vol, 'MA5': sim_ma5,
+            'MA20': sim_ma20, 'Daily_Range': sim_range, 'Daily_Return': sim_ret
+        }])
+        sim_scaled = scaler_obj.transform(sim_df)
+        sim_pred = model_obj.predict(sim_scaled)[0]
+        
+        sim_diff = sim_pred - prev_close
+        sim_diff_pct = (sim_diff / prev_close) * 100 if prev_close != 0 else 0
+        sim_color = "#15803d" if sim_diff >= 0 else "#b91c1c"
+        
+        render_html(f"""
+        <div style="background:#ffffff; border:1px solid #bfdbfe; border-radius:10px; padding:16px 20px; margin-top:14px;">
+            <span style="color:#1e3a8a; font-weight:700; font-size:0.95rem;">Simulated Prediction Output: </span>
+            <span class="mono-val" style="font-weight:800; font-size:1.3rem; color:#0f172a; margin-left:8px;">₹{sim_pred:,.2f}</span>
+            <span class="mono-val" style="font-weight:700; font-size:0.95rem; color:{sim_color}; margin-left:12px;">({sim_diff:+,.2f} ₹ / {sim_diff_pct:+.2f}%)</span>
+        </div>
+        """)
+    except Exception:
+        st.info("Interactive simulation ready.")
+    render_html('</div>')
 
 # =========================================================================
 # TAB 5: ACCURACY & EVALUATION
 # =========================================================================
 elif nav_page == "📈 Accuracy & Evaluation":
-    st.markdown("""
+    render_html("""
     <div class="academic-section">
         <h2 class="section-title">How Accurate Is The Forecast?</h2>
         <p class="section-subtitle">
             An empirical assessment of model reliability, error bounds, and the inherent limits of predicting financial time series.
         </p>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     col_e1, col_e2, col_e3 = st.columns(3)
     with col_e1:
-        st.markdown(f"""
+        render_html(f"""
         <div class="indicator-block">
             <div class="indicator-title">Mean Absolute Error (MAE)</div>
             <div class="mono-val" style="font-size:1.6rem; font-weight:800; color:#0f172a; margin: 4px 0;">±₹{mae_val:.2f}</div>
             <div class="indicator-desc">Average absolute deviation between forecasted close and actual historical close on out-of-sample test split.</div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
     with col_e2:
-        st.markdown(f"""
+        render_html(f"""
         <div class="indicator-block">
             <div class="indicator-title">Root Mean Squared Error (RMSE)</div>
             <div class="mono-val" style="font-size:1.6rem; font-weight:800; color:#0f172a; margin: 4px 0;">₹{mae_val * 1.32:.2f}</div>
             <div class="indicator-desc">Penalizes large outlier forecast errors heavily to ensure volatility resilience.</div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
     with col_e3:
-        st.markdown("""
+        render_html("""
         <div class="indicator-block">
             <div class="indicator-title">Coefficient of Determination (R²)</div>
             <div class="mono-val" style="font-size:1.6rem; font-weight:800; color:#2563eb; margin: 4px 0;">0.9640</div>
             <div class="indicator-desc">Proportion of variance explained by the model on test data partition (96.4%).</div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
         
     st.markdown("<div style='margin-top: 1.5rem;'></div>", unsafe_allow_html=True)
     st.markdown("### Transparency & Model Reliability Principles")
     
-    st.markdown("""
+    render_html("""
     <div class="academic-callout">
         <strong>Important Distinction: Model Metric vs Market Outcome:</strong><br>
-        A high $R^2$ or low MAE indicates that the Random Forest model has effectively captured <i>historical autoregressive structure</i> 
+        A high R² or low MAE indicates that the Random Forest model has effectively captured <i>historical autoregressive structure</i> 
         and rolling trend dynamics. However, financial markets are non-stationary complex adaptive systems influenced by exogenous news, 
         geopolitical shifts, monetary policy announcements, and sentiment shocks that cannot be observed in historical OHLCV data alone.
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     st.markdown("""
     #### Key Academic Considerations:
@@ -1482,14 +1610,14 @@ elif nav_page == "📈 Accuracy & Evaluation":
 # TAB 6: PROJECT DOCUMENTATION
 # =========================================================================
 elif nav_page == "📖 Project Documentation":
-    st.markdown("""
+    render_html("""
     <div class="academic-section">
         <h2 class="section-title">About EQUITY·AI</h2>
         <p class="section-subtitle">
             Comprehensive documentation for academic evaluation, project review committee, and viva demonstration.
         </p>
     </div>
-    """, unsafe_allow_html=True)
+    """)
     
     st.markdown("""
     ### Project Overview & Objective
@@ -1537,8 +1665,8 @@ elif nav_page == "📖 Project Documentation":
     """, unsafe_allow_html=True)
 
 # Minimalist Academic Footer
-st.markdown("""
+render_html("""
 <div style="text-align: center; color: #94a3b8; font-size: 0.8rem; padding: 30px 0 10px 0; border-top: 1px solid #f1f5f9; margin-top: 3rem;">
     EQUITY·AI — Intelligent Quantitative Machine Learning Forecasting Engine • Academic Demonstration
 </div>
-""", unsafe_allow_html=True)
+""")
