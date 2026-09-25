@@ -28,7 +28,7 @@ def render_html(html_str):
     Renders HTML safely by stripping all leading indentation from every line.
     Prevents Python-Markdown from accidentally interpreting 4-space indentation as a <pre><code> block.
     """
-    cleaned_lines = [line.strip() for line in html_str.strip().split("\n")]
+    cleaned_lines = [line.strip() for line in html_str.strip().split("\n") if line.strip()]
     st.markdown("\n".join(cleaned_lines), unsafe_allow_html=True)
 
 # Force Streamlit Light Theme in browser DOM and localStorage
@@ -89,10 +89,10 @@ header[data-testid="stHeader"] {
 }
 
 .block-container {
-    padding-top: 1rem !important;
+    padding-top: 0.85rem !important;
     padding-bottom: 3.5rem !important;
-    padding-left: 2rem !important;
-    padding-right: 2rem !important;
+    padding-left: 1.75rem !important;
+    padding-right: 1.75rem !important;
     max-width: 1320px !important;
     margin: 0 auto !important;
 }
@@ -109,27 +109,27 @@ header[data-testid="stHeader"] {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0 16px 0;
+    padding: 6px 0 12px 0;
     border-bottom: 1px solid #f1f5f9;
     margin-bottom: 12px;
     flex-wrap: wrap;
-    gap: 14px;
+    gap: 12px;
 }
 
 .site-brand {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .brand-icon {
     background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
     color: #ffffff;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: 800;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -144,7 +144,7 @@ header[data-testid="stHeader"] {
 .brand-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 800;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     color: #0f172a;
     letter-spacing: -0.4px;
     margin: 0;
@@ -158,17 +158,17 @@ header[data-testid="stHeader"] {
     background: #eff6ff;
     color: #2563eb;
     border: 1px solid #bfdbfe;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    padding: 2px 8px;
+    padding: 2px 7px;
     border-radius: 20px;
     letter-spacing: 0.3px;
 }
 
 .brand-subtitle {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: #64748b;
-    margin-top: 3px;
+    margin-top: 2px;
     font-weight: 500;
 }
 
@@ -187,8 +187,8 @@ header[data-testid="stHeader"] {
     color: #15803d;
     border: 1px solid #bbf7d0;
     font-weight: 700;
-    font-size: 0.76rem;
-    padding: 5px 12px;
+    font-size: 0.75rem;
+    padding: 4px 10px;
     border-radius: 20px;
 }
 
@@ -200,14 +200,14 @@ header[data-testid="stHeader"] {
     color: #64748b;
     border: 1px solid #e2e8f0;
     font-weight: 600;
-    font-size: 0.76rem;
-    padding: 5px 12px;
+    font-size: 0.75rem;
+    padding: 4px 10px;
     border-radius: 20px;
 }
 
 .pulse-circle {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: #16a34a;
     display: inline-block;
@@ -226,45 +226,47 @@ header[data-testid="stHeader"] {
     border: 1px solid #e2e8f0;
     color: #334155;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.76rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    padding: 5px 12px;
+    padding: 4px 10px;
     border-radius: 20px;
 }
 
 /* ========================================= */
-/* WEBSITE HORIZONTAL NAVBAR STYLING         */
+/* STRICT LIGHT WEBSITE HORIZONTAL NAVBAR    */
 /* ========================================= */
 div[data-testid="stSegmentedControl"],
 div[data-testid="stSegmentedControl"] > div,
 [data-baseweb="button-group"] {
-    background-color: #f8fafc !important;
+    background-color: #f1f5f9 !important;
+    background: #f1f5f9 !important;
     border: 1px solid #e2e8f0 !important;
-    border-radius: 12px !important;
+    border-radius: 10px !important;
     padding: 4px !important;
-    margin-bottom: 2rem !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    margin-bottom: 1.5rem !important;
+    box-shadow: none !important;
     gap: 4px !important;
 }
 
 div[data-testid="stSegmentedControl"] button,
 [data-baseweb="button-group"] button,
 [data-baseweb="button-group"] > div > button {
-    background-color: transparent !important;
-    color: #475569 !important;
-    border-radius: 8px !important;
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #334155 !important;
+    border-radius: 7px !important;
     font-weight: 600 !important;
-    font-size: 0.88rem !important;
-    border: none !important;
-    padding: 8px 16px !important;
+    font-size: 0.86rem !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 7px 16px !important;
     transition: all 0.15s ease !important;
 }
 
 div[data-testid="stSegmentedControl"] button:hover,
 [data-baseweb="button-group"] button:hover {
-    background-color: #ffffff !important;
+    background-color: #e2e8f0 !important;
+    background: #e2e8f0 !important;
     color: #0f172a !important;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
 }
 
 div[data-testid="stSegmentedControl"] button[aria-checked="true"],
@@ -277,12 +279,17 @@ div[data-testid="stSegmentedControl"] button[aria-selected="true"],
     color: #ffffff !important;
     font-weight: 700 !important;
     box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25) !important;
-    border: none !important;
+    border: 1px solid #2563eb !important;
 }
 
 div[data-testid="stSegmentedControl"] button[aria-checked="true"] *,
 div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     color: #ffffff !important;
+}
+
+div[data-testid="stSegmentedControl"] button[aria-checked="false"] *,
+div[data-testid="stSegmentedControl"] button[data-selected="false"] * {
+    color: #334155 !important;
 }
 
 /* Secondary Market Overview Bar */
@@ -291,7 +298,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     padding: 8px 16px;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -342,27 +349,27 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     border-radius: 4px;
 }
 
-/* Website Section Header */
+/* Section Titles */
 .page-header-wrap {
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
     border-bottom: 1px solid #f1f5f9;
 }
 
 .page-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1.85rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: #0f172a;
-    letter-spacing: -0.5px;
-    margin-bottom: 0.4rem;
+    letter-spacing: -0.4px;
+    margin-bottom: 0.3rem;
     line-height: 1.2;
 }
 
 .page-subtitle {
-    font-size: 0.96rem;
+    font-size: 0.92rem;
     color: #64748b;
-    line-height: 1.55;
+    line-height: 1.5;
     max-width: 900px;
     margin: 0;
 }
@@ -371,9 +378,9 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 .home-hero-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 2.5rem;
-    margin-bottom: 2rem;
+    border-radius: 14px;
+    padding: 2.25rem;
+    margin-bottom: 1.5rem;
     box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
 }
 
@@ -386,19 +393,19 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     border: 1px solid #dbeafe;
     padding: 4px 12px;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 0.85rem;
 }
 
 .hero-heading {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 2.6rem;
+    font-size: 2.4rem;
     font-weight: 800;
     color: #0f172a;
     line-height: 1.15;
     letter-spacing: -0.8px;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.75rem;
 }
 
 .hero-heading span {
@@ -406,20 +413,20 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .hero-lead {
-    font-size: 1.08rem;
-    line-height: 1.65;
+    font-size: 1.02rem;
+    line-height: 1.6;
     color: #334155;
     max-width: 860px;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
 }
 
 /* Project Facts Overview Strip */
 .project-facts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.25rem;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
     border-top: 1px solid #f1f5f9;
 }
 
@@ -429,88 +436,79 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .fact-label {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: #64748b;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 }
 
 .fact-val {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
-    font-size: 1rem;
+    font-size: 0.96rem;
     color: #0f172a;
 }
 
 /* Home Feature Preview Cards */
-.feature-preview-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
-    margin: 1.5rem 0 2rem 0;
-}
-
 .preview-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    margin-bottom: 0.75rem;
 }
 
 .preview-card-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: #0f172a;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.3rem;
 }
 
 .preview-card-desc {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     color: #475569;
     line-height: 1.5;
-    margin-bottom: 1rem;
 }
 
 /* Prediction Output Canvas */
 .forecast-result-canvas {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 2rem 2.25rem;
+    border-radius: 14px;
+    padding: 1.75rem 2rem;
     box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
-    margin-bottom: 2rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 .result-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding-bottom: 1.25rem;
+    padding-bottom: 1.15rem;
     border-bottom: 1px solid #f1f5f9;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     flex-wrap: wrap;
     gap: 12px;
 }
 
 .result-target-label {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 700;
     color: #64748b;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 }
 
 .result-stock-name {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.45rem;
     font-weight: 800;
     color: #0f172a;
     letter-spacing: -0.3px;
@@ -522,7 +520,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     border: 1px solid #bbf7d0;
     font-weight: 700;
     font-size: 0.82rem;
-    padding: 6px 14px;
+    padding: 5px 12px;
     border-radius: 30px;
     display: inline-flex;
     align-items: center;
@@ -535,7 +533,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     border: 1px solid #fecaca;
     font-weight: 700;
     font-size: 0.82rem;
-    padding: 6px 14px;
+    padding: 5px 12px;
     border-radius: 30px;
     display: inline-flex;
     align-items: center;
@@ -548,7 +546,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 20px;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.5rem;
 }
 
 .hero-price-display {
@@ -558,7 +556,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .hero-price-value {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 3.2rem;
+    font-size: 3rem;
     font-weight: 800;
     color: #0f172a;
     line-height: 1.05;
@@ -566,9 +564,9 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .hero-price-caption {
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     color: #64748b;
-    margin-top: 6px;
+    margin-top: 5px;
     font-weight: 500;
 }
 
@@ -580,7 +578,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .hero-delta-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     font-weight: 800;
 }
 
@@ -594,9 +592,9 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .result-footer-metrics {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 1.25rem;
-    padding-top: 1.25rem;
+    padding-top: 1.15rem;
     border-top: 1px solid #f1f5f9;
 }
 
@@ -606,7 +604,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 }
 
 .footer-metric-label {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: #64748b;
     text-transform: uppercase;
@@ -616,18 +614,9 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
 
 .footer-metric-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #1e293b;
-}
-
-/* Control Panel */
-.control-panel {
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 2rem;
 }
 
 /* Technical Evidence Info Blocks */
@@ -681,7 +670,7 @@ div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin: 1.5rem 0;
+    margin: 1.25rem 0;
 }
 
 .pipeline-stage {
@@ -773,10 +762,10 @@ div.stButton > button {
     color: #ffffff !important;
     font-weight: 700 !important;
     font-size: 0.92rem !important;
-    border-radius: 10px !important;
+    border-radius: 9px !important;
     border: none !important;
-    padding: 10px 22px !important;
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;
+    padding: 9px 20px !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2) !important;
     width: 100% !important;
     transition: all 0.2s ease !important;
 }
@@ -784,7 +773,7 @@ div.stButton > button {
 div.stButton > button:hover {
     background-color: #1d4ed8 !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35) !important;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3) !important;
 }
 
 /* Academic Callout */
@@ -793,7 +782,7 @@ div.stButton > button:hover {
     border-left: 4px solid #2563eb;
     border-radius: 0 8px 8px 0;
     padding: 1.15rem 1.35rem;
-    margin: 1.5rem 0;
+    margin: 1.25rem 0;
     font-size: 0.88rem;
     color: #334155;
     line-height: 1.6;
@@ -1104,7 +1093,7 @@ if active_page == "Home":
             set_page("How It Works")
             st.rerun()
             
-    st.markdown("<div style='margin-top: 2rem;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 1.75rem;'></div>", unsafe_allow_html=True)
     
     # 2. Subtle Market Snapshot Bar
     render_html(f"""
@@ -1131,11 +1120,7 @@ if active_page == "Home":
     </div>
     """)
     
-    # 3. Quick Prediction Runner Preview
-    st.markdown("### 🔮 Predict the Next Market Move")
-    st.markdown("Select an NSE equity from the catalog to run the trained 100-Tree Random Forest model:")
-    
-    render_html('<div class="control-panel">')
+    # 3. Quick Stock Selection & Prediction Controls
     col_sel, col_custom, col_btn = st.columns([3.2, 2.2, 2.4])
     
     with col_sel:
@@ -1160,8 +1145,6 @@ if active_page == "Home":
     with col_btn:
         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
         home_submit_btn = st.button("⚡ Generate AI Forecast", key="home_run_btn")
-        
-    render_html('</div>')
 
     if home_submit_btn:
         with st.spinner(f"Executing Machine Learning Pipeline for {home_company}..."):
@@ -1237,23 +1220,19 @@ if active_page == "Home":
     with col_p1:
         st.markdown("""
         <div class="preview-card">
-            <div>
-                <div class="preview-card-title">📊 Technical Evidence</div>
-                <div class="preview-card-desc">Multi-pane price and volume charts, moving average velocity, intraday volatility spread, and return conviction.</div>
-            </div>
+            <div class="preview-card-title">📊 Technical Evidence</div>
+            <div class="preview-card-desc">Multi-pane price and volume charts, moving average velocity, intraday volatility spread, and return conviction.</div>
         </div>
         """, unsafe_allow_html=True)
         if st.button("Explore Technical Analysis →", key="card_tech"):
             set_page("Technical Analysis")
             st.rerun()
             
-        st.markdown("<div style='margin-top: 1rem;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 0.75rem;'></div>", unsafe_allow_html=True)
         st.markdown("""
         <div class="preview-card">
-            <div>
-                <div class="preview-card-title">⚙️ Model Architecture</div>
-                <div class="preview-card-desc">In-depth inspection of 100-Tree Random Forest, Gini feature importance ranking, and an interactive What-If scenario sandbox.</div>
-            </div>
+            <div class="preview-card-title">⚙️ Model Architecture</div>
+            <div class="preview-card-desc">In-depth inspection of 100-Tree Random Forest, Gini feature importance ranking, and an interactive What-If scenario sandbox.</div>
         </div>
         """, unsafe_allow_html=True)
         if st.button("Explore Model Architecture →", key="card_model"):
@@ -1263,23 +1242,19 @@ if active_page == "Home":
     with col_p2:
         st.markdown("""
         <div class="preview-card">
-            <div>
-                <div class="preview-card-title">📈 Accuracy & Evaluation</div>
-                <div class="preview-card-desc">Empirical assessment of MAE, RMSE, and R² scores, alongside the academic limits of financial market prediction.</div>
-            </div>
+            <div class="preview-card-title">📈 Accuracy & Evaluation</div>
+            <div class="preview-card-desc">Empirical assessment of MAE, RMSE, and R² scores, alongside the academic limits of financial market prediction.</div>
         </div>
         """, unsafe_allow_html=True)
         if st.button("Explore Evaluation Metrics →", key="card_eval"):
             set_page("Evaluation")
             st.rerun()
             
-        st.markdown("<div style='margin-top: 1rem;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 0.75rem;'></div>", unsafe_allow_html=True)
         st.markdown("""
         <div class="preview-card">
-            <div>
-                <div class="preview-card-title">📖 Project Documentation</div>
-                <div class="preview-card-desc">Formal academic specifications, mathematical formulations, technology stack, and viva review documentation.</div>
-            </div>
+            <div class="preview-card-title">📖 Project Documentation</div>
+            <div class="preview-card-desc">Formal academic specifications, mathematical formulations, technology stack, and viva review documentation.</div>
         </div>
         """, unsafe_allow_html=True)
         if st.button("Read Full Documentation →", key="card_docs"):
@@ -1290,17 +1265,7 @@ if active_page == "Home":
 # PAGE: PREDICTION
 # =========================================================================
 elif active_page == "Prediction":
-    render_html("""
-    <div class="page-header-wrap">
-        <h1 class="page-title">Price Forecast & Prediction Engine</h1>
-        <p class="page-subtitle">
-            Execute the trained 100-Tree Random Forest ensemble to generate next-session price projections for any liquid NSE equity.
-        </p>
-    </div>
-    """)
-    
-    # Prediction Interactive Control Box
-    render_html('<div class="control-panel">')
+    # Stock Selection Controls
     col_sel, col_custom, col_btn = st.columns([3.2, 2.2, 2.4])
     
     with col_sel:
@@ -1326,8 +1291,6 @@ elif active_page == "Prediction":
     with col_btn:
         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
         submit_btn = st.button("⚡ Run AI Forecast Engine", key="pred_run_btn")
-        
-    render_html('</div>')
 
     if submit_btn:
         with st.status(f"Executing Machine Learning Pipeline for {company_name} ({ticker})...", expanded=True) as status_box:
@@ -1433,8 +1396,8 @@ elif active_page == "Prediction":
     """)
 
     # Main Visualization: Price Action & AI Forecast
-    st.markdown("### Price Action & AI Forecast")
-    st.markdown("50-session historical OHLC candlestick trajectory showing the seamless continuation to the machine learning model's next-day forecast:")
+    st.markdown("### Price Action & AI Forecast Target")
+    st.markdown("50-session historical OHLC candlestick trajectory showing the continuation to the machine learning forecast:")
     
     if not df_history.empty:
         df_chart = df_history.tail(50).copy()
@@ -1766,7 +1729,6 @@ elif active_page == "Model":
     st.markdown("### Interactive Model Simulation Sandbox")
     st.markdown("Adjust hypothetical inputs below to observe how the trained model updates its forecast in real time:")
     
-    render_html('<div class="control-panel">')
     sim_c1, sim_c2 = st.columns(2)
     with sim_c1:
         sim_open = st.slider("Simulated Open Price (₹):", min_value=float(prev_close*0.8), max_value=float(prev_close*1.2), value=float(prev_close), step=1.0, key="sim_open")
@@ -1803,7 +1765,6 @@ elif active_page == "Model":
         """)
     except Exception:
         st.info("Interactive simulation ready.")
-    render_html('</div>')
 
 # =========================================================================
 # PAGE: EVALUATION
