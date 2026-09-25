@@ -9,7 +9,7 @@ import streamlit.components.v1 as components
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import yfinance as yf
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 # Import trainer function
 from train_model import prepare_features, train_and_save_model
@@ -172,6 +172,19 @@ header[data-testid="stHeader"] {
     background: #f0fdf4;
     border: 1px solid #bbf7d0;
     color: #15803d;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+.closed-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #b91c1c;
     font-weight: 700;
     font-size: 0.8rem;
     padding: 6px 12px;
@@ -471,6 +484,32 @@ def fetch_stock_data(ticker, period="1y"):
         pass
     return generate_sample_stock_data(base_price=1310.0, periods=60)
 
+# Helper function to fetch live market indices (NIFTY, SENSEX, INDIA VIX)
+@st.cache_data(ttl=60, show_spinner=False)
+def fetch_live_market_indices():
+    tickers = ['^NSEI', '^BSESN', '^INDIAVIX']
+    res = {
+        '^NSEI': {'price': 25410.80, 'diff': 162.50, 'pct': 0.64},
+        '^BSESN': {'price': 83079.66, 'diff': 480.20, 'pct': 0.58},
+        '^INDIAVIX': {'price': 12.85, 'diff': -0.41, 'pct': -3.10}
+    }
+    try:
+        data = yf.download(tickers, period='5d', progress=False, timeout=5)
+        if not data.empty:
+            close_df = data['Close'] if isinstance(data.columns, pd.MultiIndex) else data
+            for t in tickers:
+                if t in close_df.columns:
+                    s = close_df[t].dropna()
+                    if len(s) >= 2:
+                        curr = float(s.iloc[-1])
+                        prev = float(s.iloc[-2])
+                        diff = curr - prev
+                        pct = (diff / prev) * 100
+                        res[t] = {'price': curr, 'diff': diff, 'pct': pct}
+    except Exception:
+        pass
+    return res
+
 # App State Management with instant non-blocking initialization
 if "app_state" not in st.session_state:
     try:
@@ -515,8 +554,34 @@ if "app_state" not in st.session_state:
             "history": generate_sample_stock_data(1312.0, 60)
         }
 
+# Live IST Market Operating Status (Mon-Fri, 9:00 AM - 4:00 PM IST)
+now_utc = datetime.now(timezone.utc)
+ist_time = now_utc + timedelta(hours=5, minutes=30)
+weekday = ist_time.weekday() # 0 = Monday, 4 = Friday
+hour = ist_time.hour
+minute = ist_time.minute
+is_market_open = (weekday < 5) and ((hour > 9 or (hour == 9 and minute >= 0)) and (hour < 16))
+
+if is_market_open:
+    live_badge = '<div class="live-indicator"><span class="pulse-dot"></span> 🟢 NSE GATEWAY LIVE (9AM-4PM IST)</div>'
+else:
+    live_badge = '<div class="closed-indicator">🔴 NSE MARKET CLOSED (Post-Market)</div>'
+
+# Fetch live real-time indices
+indices = fetch_live_market_indices()
+nifty = indices.get('^NSEI', {'price': 25410.80, 'diff': 162.50, 'pct': 0.64})
+sensex = indices.get('^BSESN', {'price': 83079.66, 'diff': 480.20, 'pct': 0.58})
+vix = indices.get('^INDIAVIX', {'price': 12.85, 'diff': -0.41, 'pct': -3.10})
+
+nifty_class = "chip-green" if nifty['pct'] >= 0 else "chip-red"
+nifty_symbol = "▲" if nifty['pct'] >= 0 else "▼"
+sensex_class = "chip-green" if sensex['pct'] >= 0 else "chip-red"
+sensex_symbol = "▲" if sensex['pct'] >= 0 else "▼"
+vix_class = "chip-green" if vix['pct'] >= 0 else "chip-red"
+vix_symbol = "▲" if vix['pct'] >= 0 else "▼"
+
 # Modern Clean SaaS Top Header
-st.markdown("""
+st.markdown(f"""
 <div class="top-navbar">
     <div class="brand-section">
         <div class="brand-logo-badge">⚡</div>
@@ -526,10 +591,10 @@ st.markdown("""
         </div>
     </div>
     <div class="market-strip">
-        <div class="live-indicator"><span class="pulse-dot"></span> NSE GATEWAY LIVE</div>
-        <div class="market-chip">NIFTY 50: <span class="chip-green">25,410.80 ▲ +0.64%</span></div>
-        <div class="market-chip">SENSEX: <span class="chip-green">83,079.66 ▲ +0.58%</span></div>
-        <div class="market-chip">INDIA VIX: <span class="chip-red">12.85 ▼ -3.10%</span></div>
+        {live_badge}
+        <div class="market-chip">NIFTY 50: <span class="{nifty_class}">{nifty['price']:,.2f} {nifty_symbol} {nifty['pct']:+.2f}%</span></div>
+        <div class="market-chip">SENSEX: <span class="{sensex_class}">{sensex['price']:,.2f} {sensex_symbol} {sensex['pct']:+.2f}%</span></div>
+        <div class="market-chip">INDIA VIX: <span class="{vix_class}">{vix['price']:,.2f} {vix_symbol} {vix['pct']:+.2f}%</span></div>
         <div class="market-chip" style="background: #eff6ff; color: #1d4ed8; font-weight: 700;">🌲 100 Trees Random Forest</div>
     </div>
 </div>
@@ -549,20 +614,43 @@ nav_page = st.segmented_control(
     label_visibility="collapsed"
 )
 
-# Stock Directory Options
+# Comprehensive Searchable Stock Directory
 stock_options = {
-    "Reliance Industries": "RELIANCE.NS",
-    "Tata Consultancy Services (TCS)": "TCS.NS",
-    "Infosys": "INFY.NS",
-    "HDFC Bank": "HDFCBANK.NS",
-    "ICICI Bank": "ICICIBANK.NS",
-    "State Bank of India (SBIN)": "SBIN.NS",
-    "Tata Motors": "TATAMOTORS.NS",
-    "Maruti Suzuki": "MARUTI.NS",
-    "ITC Limited": "ITC.NS",
-    "Bharti Airtel": "BHARTIARTL.NS",
-    "Wipro": "WIPRO.NS",
-    "Custom Ticker (.NS)": "CUSTOM"
+    "Reliance Industries (RELIANCE.NS)": "RELIANCE.NS",
+    "Tata Consultancy Services - TCS (TCS.NS)": "TCS.NS",
+    "HDFC Bank (HDFCBANK.NS)": "HDFCBANK.NS",
+    "Infosys (INFY.NS)": "INFY.NS",
+    "ICICI Bank (ICICIBANK.NS)": "ICICIBANK.NS",
+    "State Bank of India - SBIN (SBIN.NS)": "SBIN.NS",
+    "Bharti Airtel (BHARTIARTL.NS)": "BHARTIARTL.NS",
+    "ITC Limited (ITC.NS)": "ITC.NS",
+    "Larsen & Toubro - L&T (LT.NS)": "LT.NS",
+    "Tata Motors (TATAMOTORS.NS)": "TATAMOTORS.NS",
+    "Maruti Suzuki (MARUTI.NS)": "MARUTI.NS",
+    "Sun Pharmaceutical (SUNPHARMA.NS)": "SUNPHARMA.NS",
+    "Bajaj Finance (BAJFINANCE.NS)": "BAJFINANCE.NS",
+    "Kotak Mahindra Bank (KOTAKBANK.NS)": "KOTAKBANK.NS",
+    "Axis Bank (AXISBANK.NS)": "AXISBANK.NS",
+    "Hindustan Unilever (HINDUNILVR.NS)": "HINDUNILVR.NS",
+    "Titan Company (TITAN.NS)": "TITAN.NS",
+    "Adani Enterprises (ADANIENT.NS)": "ADANIENT.NS",
+    "Adani Ports (ADANIPORTS.NS)": "ADANIPORTS.NS",
+    "Wipro (WIPRO.NS)": "WIPRO.NS",
+    "HCL Technologies (HCLTECH.NS)": "HCLTECH.NS",
+    "Tata Steel (TATASTEEL.NS)": "TATASTEEL.NS",
+    "NTPC Limited (NTPC.NS)": "NTPC.NS",
+    "Power Grid Corp (POWERGRID.NS)": "POWERGRID.NS",
+    "Oil & Natural Gas Corp - ONGC (ONGC.NS)": "ONGC.NS",
+    "Mahindra & Mahindra (M&M.NS)": "M&M.NS",
+    "UltraTech Cement (ULTRACEMCO.NS)": "ULTRACEMCO.NS",
+    "Coal India (COALINDIA.NS)": "COALINDIA.NS",
+    "Bharat Electronics - BEL (BEL.NS)": "BEL.NS",
+    "Zomato (ZOMATO.NS)": "ZOMATO.NS",
+    "Tata Power (TATAPOWER.NS)": "TATAPOWER.NS",
+    "Trent Limited (TRENT.NS)": "TRENT.NS",
+    "Jio Financial Services (JIOFIN.NS)": "JIOFIN.NS",
+    "Indian Railway Finance Corp - IRFC (IRFC.NS)": "IRFC.NS",
+    "🔍 Custom / Search Any NSE Ticker (.NS)": "CUSTOM"
 }
 
 state = st.session_state["app_state"]
@@ -583,23 +671,28 @@ is_gain = diff_amount >= 0
 if nav_page == "🏠 Live Predictor":
     # Interactive Command Center Container
     with st.container(border=True):
-        st.markdown("<h3 style='color:#1e3a8a; font-size:1.2rem; font-weight:700; margin:0 0 14px 0;'>🎯 Stock Selection & Real-Time Prediction Command</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='color:#1e3a8a; font-size:1.2rem; font-weight:700; margin:0 0 14px 0;'>🎯 Search Listed NSE Company & Run AI Forecast</h3>", unsafe_allow_html=True)
         
-        col_sel, col_custom, col_btn = st.columns([3, 2, 2.5])
+        col_sel, col_custom, col_btn = st.columns([3.2, 2, 2.5])
         
         with col_sel:
-            selected_company_label = st.selectbox("Select Listed NSE Company:", list(stock_options.keys()), index=0)
+            selected_company_label = st.selectbox(
+                "Search / Select NSE Stock (Type to search):", 
+                list(stock_options.keys()), 
+                index=0,
+                help="Type any company name or ticker to filter instantly"
+            )
         
         if stock_options[selected_company_label] == "CUSTOM":
             with col_custom:
-                custom_t = st.text_input("Enter NSE Ticker Symbol:", value="MARUTI").upper().strip()
+                custom_t = st.text_input("Enter NSE Ticker Symbol:", value="TATAPOWER", help="Enter ticker symbol without or with .NS").upper().strip()
                 ticker = custom_t + ".NS" if not custom_t.endswith(".NS") else custom_t
                 company_name = custom_t
         else:
             ticker = stock_options[selected_company_label]
-            company_name = selected_company_label
+            company_name = selected_company_label.split(" (")[0]
             with col_custom:
-                st.text_input("Exchange Ticker:", value=ticker, disabled=True)
+                st.text_input("Selected Exchange Ticker:", value=ticker, disabled=True)
                 
         with col_btn:
             submit_btn = st.button("🚀 Run AI Forecast Engine")
