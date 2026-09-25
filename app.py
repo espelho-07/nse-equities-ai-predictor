@@ -39,19 +39,10 @@ header[data-testid="stHeader"] {
 }
 
 /* Force Global Light App Background & Typography */
-.stApp, body, [data-testid="stAppViewContainer"] {
+.stApp, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
     background-color: #f8fafc !important;
     color: #0f172a !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-}
-
-/* Hide any accidental empty containers or wrapper artifacts */
-div[data-testid="stVerticalBlockBorderWrapper"]:empty,
-div[data-testid="stVerticalBlock"]:empty {
-    display: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
 }
 
 /* Modern Top Navigation Bar */
@@ -60,7 +51,7 @@ div[data-testid="stVerticalBlock"]:empty {
     border: 1px solid #e2e8f0;
     border-radius: 14px;
     padding: 16px 22px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
     display: flex;
     justify-content: space-between;
@@ -182,7 +173,7 @@ div[data-testid="stSegmentedControl"] {
     border: 1px solid #e2e8f0 !important;
     border-radius: 12px !important;
     padding: 4px !important;
-    margin-bottom: 14px !important;
+    margin-bottom: 16px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
 }
 
@@ -221,17 +212,11 @@ div[data-testid="stSegmentedControl"] button span {
     color: inherit !important;
 }
 
-/* Native Container Border Cards */
-div[data-testid="stVerticalBlockBorderWrapper"] {
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
+/* Native Bordered Container Cards (st.container(border=True)) */
+div[data-testid="stVerticalBlockBorderWrapper"]:has(> div[data-testid="stVerticalBlock"]) {
     border-radius: 14px !important;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03) !important;
-    margin-bottom: 18px !important;
-}
-
-div[data-testid="stVerticalBlockBorderWrapper"] > div {
-    padding: 16px 20px !important;
+    margin-bottom: 16px !important;
 }
 
 /* Metric Cards - High Contrast Clean White */
@@ -322,7 +307,11 @@ div[data-testid="stSlider"] label p {
     margin-bottom: 8px;
 }
 
-/* Button Customization */
+/* Button Customization with Clean Alignment */
+div.stButton {
+    margin-top: 28px !important;
+}
+
 div.stButton > button {
     background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
     color: #ffffff !important;
@@ -341,13 +330,6 @@ div.stButton > button:hover {
     box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35) !important;
 }
 
-/* Status & Expander Containers */
-div[data-testid="stStatusWidget"],
-div[data-testid="stExpander"] {
-    background-color: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 12px !important;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -529,7 +511,6 @@ if nav_page == "🏠 Live Predictor":
                 st.text_input("Exchange Ticker:", value=ticker, disabled=True)
                 
         with col_btn:
-            st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
             submit_btn = st.button("🚀 Run AI Forecast Engine")
 
     if submit_btn:
@@ -612,8 +593,6 @@ if nav_page == "🏠 Live Predictor":
             delta="Random Forest Signal",
             delta_color="off"
         )
-
-    st.markdown("<div style='margin-bottom: 18px;'></div>", unsafe_allow_html=True)
 
     # Candlestick Chart & Target Projection
     with st.container(border=True):
@@ -773,8 +752,6 @@ elif nav_page == "🤖 AI Model Hub":
         with col_m4:
             st.metric("Ensemble Forest Size", "100 Trees", "Bootstrap Aggregated")
             
-        st.markdown("<br>", unsafe_allow_html=True)
-        
         # Feature Importance Bar Chart
         st.markdown("**Relative Predictor Feature Weights (%)**")
         feat_labels = ["Prev_Close", "MA5 (5-Day Avg)", "Prev_High", "Prev_Low", "Prev_Open", "MA20 (20-Day Avg)", "Daily_Range", "Daily_Return", "Prev_Volume"]
