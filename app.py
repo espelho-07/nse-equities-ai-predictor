@@ -38,10 +38,20 @@ header[data-testid="stHeader"] {
     max-width: 98% !important;
 }
 
-.stApp {
+/* Force Global Light App Background & Typography */
+.stApp, body, [data-testid="stAppViewContainer"] {
     background-color: #f8fafc !important;
     color: #0f172a !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Hide any accidental empty containers or wrapper artifacts */
+div[data-testid="stVerticalBlockBorderWrapper"]:empty,
+div[data-testid="stVerticalBlock"]:empty {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
 }
 
 /* Modern Top Navigation Bar */
@@ -50,7 +60,7 @@ header[data-testid="stHeader"] {
     border: 1px solid #e2e8f0;
     border-radius: 14px;
     padding: 16px 22px;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
     display: flex;
     justify-content: space-between;
@@ -166,17 +176,65 @@ header[data-testid="stHeader"] {
     100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
 }
 
+/* Strict Light-Themed Segmented Control Navigation */
+div[data-testid="stSegmentedControl"] {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
+    margin-bottom: 14px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+}
+
+div[data-testid="stSegmentedControl"] > div {
+    gap: 6px !important;
+}
+
+div[data-testid="stSegmentedControl"] button {
+    background-color: #f1f5f9 !important;
+    color: #334155 !important;
+    border-radius: 9px !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 8px 16px !important;
+    transition: all 0.2s ease !important;
+}
+
+div[data-testid="stSegmentedControl"] button:hover {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+}
+
+div[data-testid="stSegmentedControl"] button[aria-checked="true"],
+div[data-testid="stSegmentedControl"] button[data-selected="true"],
+div[data-testid="stSegmentedControl"] button[aria-selected="true"] {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    border-color: #1d4ed8 !important;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28) !important;
+}
+
+div[data-testid="stSegmentedControl"] button p,
+div[data-testid="stSegmentedControl"] button span {
+    color: inherit !important;
+}
+
 /* Native Container Border Cards */
 div[data-testid="stVerticalBlockBorderWrapper"] {
     background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 14px !important;
-    padding: 18px 22px !important;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03) !important;
     margin-bottom: 18px !important;
 }
 
-/* Metric Cards - High Contrast in all themes */
+div[data-testid="stVerticalBlockBorderWrapper"] > div {
+    padding: 16px 20px !important;
+}
+
+/* Metric Cards - High Contrast Clean White */
 div[data-testid="stMetric"] {
     background-color: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
@@ -198,17 +256,37 @@ div[data-testid="stMetricValue"] div {
     font-size: 1.55rem !important;
 }
 
-/* Selectbox and Input High Contrast */
+/* Form Inputs, Selectboxes, Dropdowns & Popovers Forced Light */
+div[data-baseweb="select"],
 div[data-baseweb="select"] > div,
+div[data-baseweb="input"],
 div[data-baseweb="input"] > div,
-div[data-testid="stTextInput"] input {
+div[data-testid="stTextInput"] input,
+div[data-baseweb="popover"],
+div[data-baseweb="menu"],
+ul[role="listbox"],
+li[role="option"] {
     background-color: #ffffff !important;
     color: #0f172a !important;
     border-color: #cbd5e1 !important;
 }
 
+li[role="option"]:hover,
+li[role="option"][aria-selected="true"] {
+    background-color: #eff6ff !important;
+    color: #1d4ed8 !important;
+}
+
+div[data-baseweb="select"] * {
+    color: #0f172a !important;
+}
+
+div[data-testid="stSelectbox"] label,
 div[data-testid="stSelectbox"] label p,
-div[data-testid="stTextInput"] label p {
+div[data-testid="stTextInput"] label,
+div[data-testid="stTextInput"] label p,
+div[data-testid="stSlider"] label,
+div[data-testid="stSlider"] label p {
     color: #1e293b !important;
     font-weight: 600 !important;
 }
@@ -261,6 +339,14 @@ div.stButton > button {
 div.stButton > button:hover {
     transform: translateY(-1px) !important;
     box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35) !important;
+}
+
+/* Status & Expander Containers */
+div[data-testid="stStatusWidget"],
+div[data-testid="stExpander"] {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -565,8 +651,13 @@ if nav_page == "🏠 Live Predictor":
             
             fig.update_layout(
                 template="plotly_white",
+                paper_bgcolor="#ffffff",
+                plot_bgcolor="#ffffff",
+                font=dict(color="#0f172a", family="Inter, sans-serif"),
                 height=460,
                 margin=dict(l=20, r=20, t=20, b=20),
+                xaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0"),
+                yaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0"),
                 xaxis_rangeslider_visible=False,
                 legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
             )
@@ -619,8 +710,15 @@ elif nav_page == "📊 Technical Analysis":
             
             fig_dual.update_layout(
                 template="plotly_white",
+                paper_bgcolor="#ffffff",
+                plot_bgcolor="#ffffff",
+                font=dict(color="#0f172a", family="Inter, sans-serif"),
                 height=540,
                 margin=dict(l=20, r=20, t=20, b=20),
+                xaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0"),
+                yaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0"),
+                xaxis2=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0"),
+                yaxis2=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0"),
                 xaxis_rangeslider_visible=False,
                 legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
             )
@@ -630,14 +728,32 @@ elif nav_page == "📊 Technical Analysis":
             with c1:
                 st.markdown("**Intraday High-Low Volatility Spread (₹)**")
                 fig_s = go.Figure(go.Scatter(x=df_ind.index, y=df_ind['Spread'], fill='tozeroy', line_color='#8b5cf6'))
-                fig_s.update_layout(template="plotly_white", height=240, margin=dict(l=10, r=10, t=10, b=10))
+                fig_s.update_layout(
+                    template="plotly_white",
+                    paper_bgcolor="#ffffff",
+                    plot_bgcolor="#ffffff",
+                    font=dict(color="#0f172a", family="Inter, sans-serif"),
+                    height=240,
+                    margin=dict(l=10, r=10, t=10, b=10),
+                    xaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0"),
+                    yaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0")
+                )
                 st.plotly_chart(fig_s, use_container_width=True)
                 
             with c2:
                 st.markdown("**Daily Percentage Return (%)**")
                 ret_vals = ((df_ind['Close'] - df_ind['Open']) / df_ind['Open']) * 100
                 fig_r = go.Figure(go.Bar(x=df_ind.index, y=ret_vals, marker_color=['#16a34a' if v >= 0 else '#dc2626' for v in ret_vals]))
-                fig_r.update_layout(template="plotly_white", height=240, margin=dict(l=10, r=10, t=10, b=10))
+                fig_r.update_layout(
+                    template="plotly_white",
+                    paper_bgcolor="#ffffff",
+                    plot_bgcolor="#ffffff",
+                    font=dict(color="#0f172a", family="Inter, sans-serif"),
+                    height=240,
+                    margin=dict(l=10, r=10, t=10, b=10),
+                    xaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0"),
+                    yaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0")
+                )
                 st.plotly_chart(fig_r, use_container_width=True)
 
 # ==========================================
@@ -672,8 +788,13 @@ elif nav_page == "🤖 AI Model Hub":
         ))
         fig_f.update_layout(
             template="plotly_white",
+            paper_bgcolor="#ffffff",
+            plot_bgcolor="#ffffff",
+            font=dict(color="#0f172a", family="Inter, sans-serif"),
             height=320,
             margin=dict(l=20, r=20, t=20, b=20),
+            xaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0"),
+            yaxis=dict(gridcolor="#f1f5f9", linecolor="#e2e8f0"),
             xaxis_title="Importance Weight (%)"
         )
         st.plotly_chart(fig_f, use_container_width=True)
