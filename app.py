@@ -1196,17 +1196,32 @@ PAGE_LIST = [
     "Documentation"
 ]
 
-# Check query param if provided
-query_page = st.query_params.get("page", None)
+# Initialize navigation state from URL query parameter or default to Home
 if "nav_page" not in st.session_state:
+    query_page = st.query_params.get("page", None)
     if query_page and query_page in PAGE_LIST:
         st.session_state["nav_page"] = query_page
     else:
         st.session_state["nav_page"] = "Home"
 
+# Ensure nav_control widget key is always in sync with nav_page
+if "nav_control" not in st.session_state or st.session_state["nav_control"] not in PAGE_LIST:
+    st.session_state["nav_control"] = st.session_state["nav_page"]
+
+def on_nav_change():
+    selected = st.session_state.get("nav_control")
+    if selected and selected in PAGE_LIST:
+        st.session_state["nav_page"] = selected
+        st.query_params["page"] = selected
+    else:
+        # Prevent deselection: keep active page if user clicks active tab
+        st.session_state["nav_control"] = st.session_state["nav_page"]
+
 def set_page(page_name):
-    st.session_state["nav_page"] = page_name
-    st.query_params["page"] = page_name
+    if page_name in PAGE_LIST:
+        st.session_state["nav_page"] = page_name
+        st.session_state["nav_control"] = page_name
+        st.query_params["page"] = page_name
 
 # Live IST Market Operating Status (Mon-Fri, 9:00 AM - 4:00 PM IST)
 now_utc = datetime.now(timezone.utc)
@@ -1256,18 +1271,14 @@ render_html(f"""
 </div>
 """)
 
-# 2. WEBSITE HORIZONTAL NAVBAR
-current_nav = st.segmented_control(
+# 2. WEBSITE HORIZONTAL NAVBAR - 1-Click Instant Navigation
+st.segmented_control(
     "Website Navigation",
     PAGE_LIST,
-    default=st.session_state["nav_page"],
+    key="nav_control",
+    on_change=on_nav_change,
     label_visibility="collapsed"
 )
-
-# Sync navigation state if user clicked the navbar
-if current_nav and current_nav != st.session_state["nav_page"]:
-    st.session_state["nav_page"] = current_nav
-    st.query_params["page"] = current_nav
 
 # Comprehensive Searchable Stock Directory (35+ Major Bluechips)
 stock_options = {
