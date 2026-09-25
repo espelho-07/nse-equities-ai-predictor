@@ -24,7 +24,20 @@ st.set_page_config(
 # Custom Modern Clean Theme & Strict Color Enforcement
 st.markdown("""
 <style>
-/* Remove Default Streamlit Header & Top Whitespace Margin */
+/* 1. Global Reset & Force Light Theme */
+:root, html, body, [data-theme="dark"], [data-theme="light"], .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+    --background-color: #f8fafc !important;
+    --secondary-background-color: #ffffff !important;
+    --primary-color: #2563eb !important;
+    --text-color: #0f172a !important;
+    --body-font-color: #0f172a !important;
+    color-scheme: light !important;
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Remove Default Streamlit Header */
 header[data-testid="stHeader"] {
     display: none !important;
     height: 0px !important;
@@ -38,14 +51,7 @@ header[data-testid="stHeader"] {
     max-width: 98% !important;
 }
 
-/* Force Global Light App Background & Typography */
-.stApp, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-    background-color: #f8fafc !important;
-    color: #0f172a !important;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-}
-
-/* Modern Top Navigation Bar */
+/* 2. Modern Top Navigation Bar */
 .top-navbar {
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -167,21 +173,22 @@ header[data-testid="stHeader"] {
     100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
 }
 
-/* Strict Light-Themed Segmented Control Navigation */
-div[data-testid="stSegmentedControl"] {
+/* 3. Strict Light Theme Segmented Control */
+div[data-testid="stSegmentedControl"],
+div[data-testid="stSegmentedControl"] > div,
+[data-baseweb="button-group"] {
     background-color: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 12px !important;
     padding: 4px !important;
     margin-bottom: 16px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
-}
-
-div[data-testid="stSegmentedControl"] > div {
     gap: 6px !important;
 }
 
-div[data-testid="stSegmentedControl"] button {
+div[data-testid="stSegmentedControl"] button,
+[data-baseweb="button-group"] button,
+[data-baseweb="button-group"] > div > button {
     background-color: #f1f5f9 !important;
     color: #334155 !important;
     border-radius: 9px !important;
@@ -192,68 +199,108 @@ div[data-testid="stSegmentedControl"] button {
     transition: all 0.2s ease !important;
 }
 
-div[data-testid="stSegmentedControl"] button:hover {
+div[data-testid="stSegmentedControl"] button:hover,
+[data-baseweb="button-group"] button:hover {
     background-color: #e2e8f0 !important;
     color: #0f172a !important;
 }
 
 div[data-testid="stSegmentedControl"] button[aria-checked="true"],
 div[data-testid="stSegmentedControl"] button[data-selected="true"],
-div[data-testid="stSegmentedControl"] button[aria-selected="true"] {
+div[data-testid="stSegmentedControl"] button[aria-selected="true"],
+[data-baseweb="button-group"] button[aria-checked="true"],
+[data-baseweb="button-group"] button[data-selected="true"] {
     background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+    background-color: #2563eb !important;
     color: #ffffff !important;
     font-weight: 700 !important;
     border-color: #1d4ed8 !important;
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28) !important;
 }
 
-div[data-testid="stSegmentedControl"] button p,
-div[data-testid="stSegmentedControl"] button span {
-    color: inherit !important;
+div[data-testid="stSegmentedControl"] button[aria-checked="true"] *,
+div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
+    color: #ffffff !important;
 }
 
-/* Native Bordered Container Cards (st.container(border=True)) */
+div[data-testid="stSegmentedControl"] button[aria-checked="false"] *,
+div[data-testid="stSegmentedControl"] button[data-selected="false"] * {
+    color: #334155 !important;
+}
+
+/* 4. Native Container Border Cards */
 div[data-testid="stVerticalBlockBorderWrapper"]:has(> div[data-testid="stVerticalBlock"]) {
     border-radius: 14px !important;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03) !important;
     margin-bottom: 16px !important;
 }
 
-/* Metric Cards - High Contrast Clean White */
+/* 5. Metric Cards High Contrast Light */
 div[data-testid="stMetric"] {
     background-color: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 12px !important;
-    padding: 14px 18px !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+    padding: 16px 20px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
 }
 
-div[data-testid="stMetricLabel"] p, 
-div[data-testid="stMetricLabel"] span {
+div[data-testid="stMetricLabel"],
+div[data-testid="stMetricLabel"] *,
+div[data-testid="stMetricLabel"] p,
+div[data-testid="stMetricLabel"] span,
+div[data-testid="stMetricLabel"] div {
     color: #475569 !important;
+    -webkit-text-fill-color: #475569 !important;
     font-weight: 600 !important;
-    font-size: 0.88rem !important;
+    font-size: 0.9rem !important;
 }
 
+div[data-testid="stMetricValue"],
+div[data-testid="stMetricValue"] *,
 div[data-testid="stMetricValue"] div {
     color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
     font-weight: 800 !important;
-    font-size: 1.55rem !important;
+    font-size: 1.6rem !important;
 }
 
-/* Form Inputs, Selectboxes, Dropdowns & Popovers Forced Light */
+div[data-testid="stMetricDelta"],
+div[data-testid="stMetricDelta"] *,
+div[data-testid="stMetricDelta"] div,
+div[data-testid="stMetricDelta"] span {
+    color: #64748b !important;
+    -webkit-text-fill-color: #64748b !important;
+    font-weight: 600 !important;
+}
+
+/* 6. Form Inputs & Selectbox Forced Light */
 div[data-baseweb="select"],
 div[data-baseweb="select"] > div,
+div[data-baseweb="select"] div,
 div[data-baseweb="input"],
 div[data-baseweb="input"] > div,
+div[data-baseweb="input"] input,
 div[data-testid="stTextInput"] input,
+div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+}
+
+div[data-baseweb="select"] span,
+div[data-baseweb="select"] p,
+div[data-baseweb="select"] svg {
+    color: #0f172a !important;
+    fill: #0f172a !important;
+}
+
 div[data-baseweb="popover"],
 div[data-baseweb="menu"],
 ul[role="listbox"],
 li[role="option"] {
     background-color: #ffffff !important;
     color: #0f172a !important;
-    border-color: #cbd5e1 !important;
 }
 
 li[role="option"]:hover,
@@ -262,8 +309,13 @@ li[role="option"][aria-selected="true"] {
     color: #1d4ed8 !important;
 }
 
-div[data-baseweb="select"] * {
-    color: #0f172a !important;
+input:disabled,
+div[aria-disabled="true"],
+div[aria-disabled="true"] * {
+    background-color: #f8fafc !important;
+    color: #475569 !important;
+    -webkit-text-fill-color: #475569 !important;
+    border-color: #cbd5e1 !important;
 }
 
 div[data-testid="stSelectbox"] label,
@@ -273,10 +325,11 @@ div[data-testid="stTextInput"] label p,
 div[data-testid="stSlider"] label,
 div[data-testid="stSlider"] label p {
     color: #1e293b !important;
+    -webkit-text-fill-color: #1e293b !important;
     font-weight: 600 !important;
 }
 
-/* Step Pipeline Cards */
+/* 7. Step Pipeline Cards */
 .pipeline-step {
     background: #f8fafc;
     border: 1px solid #e2e8f0;
@@ -293,7 +346,7 @@ div[data-testid="stSlider"] label p {
     margin-bottom: 4px;
 }
 
-/* Tech Pills */
+/* 8. Tech Pills */
 .tech-tag {
     display: inline-block;
     background: #eff6ff;
@@ -307,7 +360,7 @@ div[data-testid="stSlider"] label p {
     margin-bottom: 8px;
 }
 
-/* Button Customization with Clean Alignment */
+/* 9. Action Button */
 div.stButton {
     margin-top: 28px !important;
 }
@@ -329,7 +382,6 @@ div.stButton > button:hover {
     transform: translateY(-1px) !important;
     box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35) !important;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
