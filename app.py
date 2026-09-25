@@ -248,27 +248,55 @@ div[data-testid="stSegmentedControl"] > div,
     gap: 4px !important;
 }
 
+/* Inactive (Unselected) Navbar Buttons */
 div[data-testid="stSegmentedControl"] button,
+div[data-testid="stSegmentedControl"] button[aria-checked="false"],
+div[data-testid="stSegmentedControl"] button[data-selected="false"],
 [data-baseweb="button-group"] button,
+[data-baseweb="button-group"] button[aria-checked="false"],
+[data-baseweb="button-group"] button[data-selected="false"],
 [data-baseweb="button-group"] > div > button {
     background-color: #ffffff !important;
     background: #ffffff !important;
     color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
     border-radius: 7px !important;
     font-weight: 600 !important;
     font-size: 0.86rem !important;
-    border: 1px solid #e2e8f0 !important;
+    border: 1px solid #cbd5e1 !important;
     padding: 7px 16px !important;
     transition: all 0.15s ease !important;
 }
 
-div[data-testid="stSegmentedControl"] button:hover,
-[data-baseweb="button-group"] button:hover {
-    background-color: #e2e8f0 !important;
-    background: #e2e8f0 !important;
-    color: #0f172a !important;
+div[data-testid="stSegmentedControl"] button *,
+div[data-testid="stSegmentedControl"] button[aria-checked="false"] *,
+div[data-testid="stSegmentedControl"] button[data-selected="false"] * {
+    color: #334155 !important;
+    -webkit-text-fill-color: #334155 !important;
 }
 
+/* Hover State on Inactive Buttons - Soft Blue Tint */
+div[data-testid="stSegmentedControl"] button:hover,
+div[data-testid="stSegmentedControl"] button[aria-checked="false"]:hover,
+div[data-testid="stSegmentedControl"] button[data-selected="false"]:hover,
+[data-baseweb="button-group"] button:hover,
+[data-baseweb="button-group"] button[aria-checked="false"]:hover,
+[data-baseweb="button-group"] button[data-selected="false"]:hover {
+    background-color: #eff6ff !important;
+    background: #eff6ff !important;
+    color: #1d4ed8 !important;
+    -webkit-text-fill-color: #1d4ed8 !important;
+    border-color: #93c5fd !important;
+}
+
+div[data-testid="stSegmentedControl"] button:hover *,
+div[data-testid="stSegmentedControl"] button[aria-checked="false"]:hover *,
+div[data-testid="stSegmentedControl"] button[data-selected="false"]:hover * {
+    color: #1d4ed8 !important;
+    -webkit-text-fill-color: #1d4ed8 !important;
+}
+
+/* Selected (Active) Navbar Button */
 div[data-testid="stSegmentedControl"] button[aria-checked="true"],
 div[data-testid="stSegmentedControl"] button[data-selected="true"],
 div[data-testid="stSegmentedControl"] button[aria-selected="true"],
@@ -277,19 +305,38 @@ div[data-testid="stSegmentedControl"] button[aria-selected="true"],
     background: #2563eb !important;
     background-color: #2563eb !important;
     color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
     font-weight: 700 !important;
     box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25) !important;
     border: 1px solid #2563eb !important;
 }
 
 div[data-testid="stSegmentedControl"] button[aria-checked="true"] *,
-div[data-testid="stSegmentedControl"] button[data-selected="true"] * {
+div[data-testid="stSegmentedControl"] button[data-selected="true"] *,
+div[data-testid="stSegmentedControl"] button[aria-selected="true"] * {
     color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
 }
 
-div[data-testid="stSegmentedControl"] button[aria-checked="false"] *,
-div[data-testid="stSegmentedControl"] button[data-selected="false"] * {
-    color: #334155 !important;
+/* Hover State on Selected (Active) Button - Darker Blue, White Text */
+div[data-testid="stSegmentedControl"] button[aria-checked="true"]:hover,
+div[data-testid="stSegmentedControl"] button[data-selected="true"]:hover,
+div[data-testid="stSegmentedControl"] button[aria-selected="true"]:hover,
+[data-baseweb="button-group"] button[aria-checked="true"]:hover,
+[data-baseweb="button-group"] button[data-selected="true"]:hover {
+    background: #1d4ed8 !important;
+    background-color: #1d4ed8 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: 1px solid #1d4ed8 !important;
+    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.35) !important;
+}
+
+div[data-testid="stSegmentedControl"] button[aria-checked="true"]:hover *,
+div[data-testid="stSegmentedControl"] button[data-selected="true"]:hover *,
+div[data-testid="stSegmentedControl"] button[aria-selected="true"]:hover * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
 }
 
 /* Secondary Market Overview Bar */
@@ -760,6 +807,7 @@ div.stButton > button {
     background: #2563eb !important;
     background-color: #2563eb !important;
     color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
     font-weight: 700 !important;
     font-size: 0.92rem !important;
     border-radius: 9px !important;
@@ -770,10 +818,30 @@ div.stButton > button {
     transition: all 0.2s ease !important;
 }
 
+div.stButton > button * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
 div.stButton > button:hover {
+    background: #1d4ed8 !important;
     background-color: #1d4ed8 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3) !important;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35) !important;
+}
+
+div.stButton > button:hover * {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+div.stButton > button:active {
+    background: #1e40af !important;
+    background-color: #1e40af !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
 }
 
 /* Academic Callout */
