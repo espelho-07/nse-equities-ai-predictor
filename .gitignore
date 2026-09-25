@@ -1,0 +1,22 @@
+﻿# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*.class
+
+# Jupyter Checkpoints
+.ipynb_checkpoints/
+
+# Anaconda Projects Cache
+anaconda_projects/
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

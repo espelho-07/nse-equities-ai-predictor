@@ -1,0 +1,20 @@
+{
+    "close": {
+        "mae": 28.03,
+        "rmse": 38.87,
+        "r2": 0.9613
+    },
+    "feature_cols": [
+        "Prev_Close",
+        "Prev_High",
+        "Prev_Low",
+        "Prev_Open",
+        "Prev_Volume",
+        "MA5",
+        "MA20",
+        "Daily_Range",
+        "Daily_Return"
+    ],
+    "ticker": "INFY.NS",
+    "last_updated": "2026-09-25 10:40:50.692101"
+}
